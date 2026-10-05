@@ -16,7 +16,7 @@ jobs:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -50,7 +50,7 @@ jobs:
       run:
         working-directory: backend
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -67,7 +67,7 @@ jobs:
     name: Validate production Compose configuration
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker compose --env-file .env.production.example -f docker-compose.prod.yml config --quiet
       - run: docker compose --env-file .env.production.example --profile monitoring -f docker-compose.prod.yml config --quiet
       - run: docker compose --env-file .env.production.example --profile monitoring -f docker-compose.prod.yml config --format json > production-compose.json
