@@ -93,8 +93,10 @@ class FlowCrmApiIntegrationTests {
 
     @Test
     void prometheusMetricsEndpointIsAvailableForInternalScraping() throws Exception {
-        mockMvc.perform(get("/actuator/prometheus"))
-                .andExpect(status().isOk());
+        var response = mockMvc.perform(get("/actuator/prometheus"))
+                .andReturn()
+                .getResponse();
+        assertEquals(200, response.getStatus(), response.getContentAsString());
     }
 
     @Test
@@ -240,10 +242,16 @@ class FlowCrmApiIntegrationTests {
                 email,
                 "temporary-test-password"
         ));
+        String salesToken = jwtService.generateAccessToken(
+                registered.userId(),
+                registered.companyId(),
+                registered.email(),
+                "SALES"
+        );
 
         try {
             mockMvc.perform(get("/api/v1/users")
-                            .header("Authorization", "Bearer " + registered.accessToken()))
+                            .header("Authorization", "Bearer " + salesToken))
                     .andExpect(status().isForbidden());
         } finally {
             userRepository.deleteById(registered.userId());
@@ -362,7 +370,8 @@ class FlowCrmApiIntegrationTests {
                     .getContentAsString();
             taskId = UUID.fromString(objectMapper.readTree(response).get("id").asText());
 
-            mockMvc.perform(get("/api/v1/tasks?search=Integration%20task")
+            mockMvc.perform(get("/api/v1/tasks")
+                            .param("search", "Integration task")
                             .header("Authorization", "Bearer " + registered.accessToken()))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.totalElements").value(1))

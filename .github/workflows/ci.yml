@@ -87,18 +87,24 @@ jobs:
               throw new Error(`${service} must bind to loopback only`);
             }
           }
-          if (!compose.services.frontend.networks?.frontend_edge
-              || compose.services.frontend.networks?.api_edge
-              || compose.services.frontend.networks?.monitoring) {
+          const attachedNetworks = (service) => {
+            const networks = service?.networks;
+            return Array.isArray(networks) ? networks : Object.keys(networks ?? {});
+          };
+          const hasNetwork = (service, expected) => attachedNetworks(service).some((network) =>
+            network === expected || network.endsWith(`_${expected}`) || network.endsWith(`-${expected}`)
+          );
+          const hasOnlyNetworks = (service, expected) => {
+            const networks = attachedNetworks(service);
+            return networks.length === expected.length && expected.every((network) => hasNetwork(service, network));
+          };
+          if (!hasOnlyNetworks(compose.services.frontend, ['frontend_edge'])) {
             throw new Error('frontend must only attach to the frontend edge network');
           }
-          if (!compose.services.caddy.networks?.frontend_edge
-              || !compose.services.caddy.networks?.api_edge) {
+          if (!hasOnlyNetworks(compose.services.caddy, ['frontend_edge', 'api_edge'])) {
             throw new Error('Caddy must connect the isolated frontend and API networks');
           }
-          if (!compose.services.backend.networks?.api_edge
-              || !compose.services.backend.networks?.monitoring
-              || compose.services.backend.networks?.frontend_edge) {
+          if (!hasOnlyNetworks(compose.services.backend, ['api_edge', 'data', 'monitoring'])) {
             throw new Error('API must be isolated from the frontend and reachable by monitoring');
           }
           NODE
