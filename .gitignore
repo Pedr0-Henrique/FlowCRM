@@ -1,0 +1,35 @@
+# Dependências
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/coverage/
+
+# Java / Maven
+backend/target/
+backend/.mvn/wrapper/*.jar.part
+*.class
+*.jar
+!backend/mvnw
+!backend/mvnw.cmd
+
+# Ambiente
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Testes
+playwright-report/
+test-results/
+
+# Backups locais
+backups/

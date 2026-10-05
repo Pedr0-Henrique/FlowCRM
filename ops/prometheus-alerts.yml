@@ -1,0 +1,29 @@
+groups:
+  - name: flowcrm-api
+    rules:
+      - alert: FlowCrmApiUnavailable
+        expr: up{job="flowcrm-api"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: FlowCRM API is unavailable
+          description: Prometheus has been unable to scrape the FlowCRM API for at least two minutes.
+
+      - alert: FlowCrmApiHighHeapUsage
+        expr: jvm_memory_used_bytes{job="flowcrm-api", area="heap"} / jvm_memory_max_bytes{job="flowcrm-api", area="heap"} > 0.85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: FlowCRM API heap usage is high
+          description: The API has used more than 85% of its maximum JVM heap for at least five minutes.
+
+      - alert: FlowCrmApiHttp5xxRate
+        expr: sum(rate(http_server_requests_seconds_count{job="flowcrm-api", status=~"5..", uri!~"/actuator.*"}[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: FlowCRM API is returning server errors
+          description: The API has returned more than one HTTP 5xx response per second over the last five minutes.

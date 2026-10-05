@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:tc:postgresql:16-alpine:///flowcrm}
+    driver-class-name: ${DATABASE_DRIVER:org.testcontainers.jdbc.ContainerDatabaseDriver}
+    username: ${DATABASE_USERNAME:}
+    password: ${DATABASE_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: validate

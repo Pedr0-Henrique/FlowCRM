@@ -1,0 +1,5 @@
+# Perfil local — não usar em produção
+logging:
+  level:
+    com.flowcrm: DEBUG
+    org.springframework.security: INFO
