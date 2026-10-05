@@ -3,8 +3,8 @@ spring:
     name: flowcrm-api
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/flowcrm}
-    username: ${DATABASE_USERNAME:flowcrm}
-    password: ${DATABASE_PASSWORD:flowcrm}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:root}
   jpa:
     hibernate:
       ddl-auto: validate
