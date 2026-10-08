@@ -6,6 +6,7 @@ import Link from "next/link";
 import { login, setAuthTokens } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,7 +32,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-6 bg-background">
+    <div className="relative flex min-h-screen items-center justify-center p-6 bg-background">
+      <div className="absolute right-6 top-6">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-lg">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-foreground">FlowCRM</h1>
