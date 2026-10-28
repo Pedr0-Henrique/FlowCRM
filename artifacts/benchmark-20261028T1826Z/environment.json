@@ -1,0 +1,18 @@
+{
+  "os": "Windows_NT",
+  "release": "10.0.26300",
+  "cpu": "AMD Ryzen 5 5500                               ",
+  "logicalCpus": 12,
+  "ramBytes": 17042165760,
+  "java": "Amazon Corretto 21.0.7",
+  "jvmArgs": [
+    "-Xms256m",
+    "-Xmx512m"
+  ],
+  "postgres": "17.4",
+  "database": "flowcrm_benchmark",
+  "api": "127.0.0.1:18080",
+  "loginRateLimit": 10000,
+  "k6": "1.8.2",
+  "note": "Dedicated new local PostgreSQL cluster; native Windows processes; Docker not available; no build/test suite intentionally running during load."
+}

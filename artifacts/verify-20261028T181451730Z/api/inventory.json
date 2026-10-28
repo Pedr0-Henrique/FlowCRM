@@ -1,0 +1,327 @@
+{
+  "source": "runtime OpenAPI",
+  "total": 43,
+  "modules": {
+    "users": 5,
+    "tasks": 6,
+    "opportunities": 6,
+    "leads": 6,
+    "companies": 6,
+    "clients": 5,
+    "auth": 5,
+    "activities": 3,
+    "dashboard": 1
+  },
+  "methods": {
+    "GET": 16,
+    "PUT": 6,
+    "DELETE": 7,
+    "POST": 11,
+    "PATCH": 3
+  },
+  "public": 3,
+  "authenticated": 40,
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/api/v1/activities",
+      "module": "activities",
+      "access": "authenticated",
+      "operationId": "findAll_6"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/activities",
+      "module": "activities",
+      "access": "authenticated",
+      "operationId": "create_6"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/activities/{id}",
+      "module": "activities",
+      "access": "authenticated",
+      "operationId": "delete_6"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "module": "auth",
+      "access": "public",
+      "operationId": "login"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "module": "auth",
+      "access": "authenticated",
+      "operationId": "logout"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "module": "auth",
+      "access": "authenticated",
+      "operationId": "getMe"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "module": "auth",
+      "access": "public",
+      "operationId": "refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "module": "auth",
+      "access": "public",
+      "operationId": "register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/clients",
+      "module": "clients",
+      "access": "authenticated",
+      "operationId": "findAll_5"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/clients",
+      "module": "clients",
+      "access": "authenticated",
+      "operationId": "create_5"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/clients/{id}",
+      "module": "clients",
+      "access": "authenticated",
+      "operationId": "delete_5"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/clients/{id}",
+      "module": "clients",
+      "access": "authenticated",
+      "operationId": "findById_5"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/clients/{id}",
+      "module": "clients",
+      "access": "authenticated",
+      "operationId": "update_5"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies",
+      "module": "companies",
+      "access": "authenticated",
+      "operationId": "findAll_4"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/companies",
+      "module": "companies",
+      "access": "authenticated",
+      "operationId": "create_4"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/companies/{id}",
+      "module": "companies",
+      "access": "authenticated",
+      "operationId": "delete_4"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/{id}",
+      "module": "companies",
+      "access": "authenticated",
+      "operationId": "findById_4"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/companies/{id}",
+      "module": "companies",
+      "access": "authenticated",
+      "operationId": "update_4"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/companies/slug/{slug}",
+      "module": "companies",
+      "access": "authenticated",
+      "operationId": "findBySlug"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard",
+      "module": "dashboard",
+      "access": "authenticated",
+      "operationId": "getDashboard"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/leads",
+      "module": "leads",
+      "access": "authenticated",
+      "operationId": "findAll_3"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/leads",
+      "module": "leads",
+      "access": "authenticated",
+      "operationId": "create_3"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/leads/{id}",
+      "module": "leads",
+      "access": "authenticated",
+      "operationId": "delete_3"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/leads/{id}",
+      "module": "leads",
+      "access": "authenticated",
+      "operationId": "findById_3"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/leads/{id}",
+      "module": "leads",
+      "access": "authenticated",
+      "operationId": "update_3"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/leads/{id}/status",
+      "module": "leads",
+      "access": "authenticated",
+      "operationId": "updateStatus"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/opportunities",
+      "module": "opportunities",
+      "access": "authenticated",
+      "operationId": "findAll_2"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/opportunities",
+      "module": "opportunities",
+      "access": "authenticated",
+      "operationId": "create_2"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/opportunities/{id}",
+      "module": "opportunities",
+      "access": "authenticated",
+      "operationId": "delete_2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/opportunities/{id}",
+      "module": "opportunities",
+      "access": "authenticated",
+      "operationId": "findById_2"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/opportunities/{id}",
+      "module": "opportunities",
+      "access": "authenticated",
+      "operationId": "update_2"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/opportunities/{id}/stage",
+      "module": "opportunities",
+      "access": "authenticated",
+      "operationId": "updateStage"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks",
+      "module": "tasks",
+      "access": "authenticated",
+      "operationId": "findAll_1"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tasks",
+      "module": "tasks",
+      "access": "authenticated",
+      "operationId": "create_1"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/tasks/{id}",
+      "module": "tasks",
+      "access": "authenticated",
+      "operationId": "delete_1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/{id}",
+      "module": "tasks",
+      "access": "authenticated",
+      "operationId": "findById_1"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/tasks/{id}",
+      "module": "tasks",
+      "access": "authenticated",
+      "operationId": "update_1"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/tasks/{id}/complete",
+      "module": "tasks",
+      "access": "authenticated",
+      "operationId": "complete"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users",
+      "module": "users",
+      "access": "authenticated",
+      "operationId": "findAll"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/users",
+      "module": "users",
+      "access": "authenticated",
+      "operationId": "create"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/users/{id}",
+      "module": "users",
+      "access": "authenticated",
+      "operationId": "delete"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/{id}",
+      "module": "users",
+      "access": "authenticated",
+      "operationId": "findById"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/users/{id}",
+      "module": "users",
+      "access": "authenticated",
+      "operationId": "update"
+    }
+  ]
+}

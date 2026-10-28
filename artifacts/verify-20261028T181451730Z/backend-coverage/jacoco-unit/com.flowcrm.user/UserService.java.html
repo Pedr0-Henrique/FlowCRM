@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.user</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.flowcrm.user;
+
+import com.flowcrm.company.Company;
+import com.flowcrm.company.CompanyRepository;
+import com.flowcrm.shared.exception.ConflictException;
+import com.flowcrm.shared.exception.ResourceNotFoundException;
+import com.flowcrm.user.dto.UserRequest;
+import com.flowcrm.user.dto.UserResponse;
+import com.flowcrm.user.dto.UserUpdateRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional(readOnly = true)
+    public List&lt;UserResponse&gt; findAllByCompanyId(UUID companyId) {
+<span class="nc" id="L28">        return userRepository.findAllByCompanyIdOrderByNameAsc(companyId).stream()</span>
+<span class="nc" id="L29">                .map(this::toResponse)</span>
+<span class="nc" id="L30">                .toList();</span>
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponse findById(UUID id, UUID companyId) {
+<span class="nc" id="L35">        User user = userRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L36">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Usuário não encontrado&quot;));</span>
+<span class="nc" id="L37">        return toResponse(user);</span>
+    }
+
+    @Transactional
+    public UserResponse create(UserRequest request) {
+<span class="nc" id="L42">        Company company = companyRepository.findById(request.companyId())</span>
+<span class="nc" id="L43">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Empresa não encontrada&quot;));</span>
+
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (userRepository.existsByEmail(request.email())) {</span>
+<span class="nc" id="L46">            throw new ConflictException(&quot;E-mail já cadastrado&quot;);</span>
+        }
+
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        String passwordHash = request.password() != null</span>
+<span class="nc" id="L50">                ? passwordEncoder.encode(request.password())</span>
+<span class="nc" id="L51">                : null;</span>
+
+<span class="nc" id="L53">        User user = new User(</span>
+                company,
+<span class="nc" id="L55">                request.name(),</span>
+<span class="nc" id="L56">                request.email(),</span>
+                passwordHash,
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                request.role() != null ? request.role() : Role.USER</span>
+        );
+
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (request.active() != null) {</span>
+<span class="nc" id="L62">            user.setActive(request.active());</span>
+        }
+
+<span class="nc" id="L65">        user = userRepository.save(user);</span>
+<span class="nc" id="L66">        return toResponse(user);</span>
+    }
+
+    @Transactional
+    public UserResponse update(UUID id, UUID companyId, UserUpdateRequest request) {
+<span class="nc" id="L71">        User user = userRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L72">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Usuário não encontrado&quot;));</span>
+
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (request.name() != null) {</span>
+<span class="nc" id="L75">            user.setName(request.name());</span>
+        }
+
+<span class="nc bnc" id="L78" title="All 4 branches missed.">        if (request.email() != null &amp;&amp; !request.email().equals(user.getEmail())) {</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (userRepository.existsByEmail(request.email())) {</span>
+<span class="nc" id="L80">                throw new ConflictException(&quot;E-mail já cadastrado&quot;);</span>
+            }
+<span class="nc" id="L82">            user.setEmail(request.email());</span>
+        }
+
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (request.password() != null) {</span>
+<span class="nc" id="L86">            user.setPasswordHash(passwordEncoder.encode(request.password()));</span>
+        }
+
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (request.role() != null) {</span>
+<span class="nc" id="L90">            user.setRole(request.role());</span>
+        }
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (request.active() != null) {</span>
+<span class="nc" id="L94">            user.setActive(request.active());</span>
+        }
+
+<span class="nc" id="L97">        user = userRepository.save(user);</span>
+<span class="nc" id="L98">        return toResponse(user);</span>
+    }
+
+    @Transactional
+    public void delete(UUID id, UUID companyId) {
+<span class="nc" id="L103">        User user = userRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L104">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Usuário não encontrado&quot;));</span>
+<span class="nc" id="L105">        userRepository.delete(user);</span>
+<span class="nc" id="L106">    }</span>
+
+    private UserResponse toResponse(User user) {
+<span class="nc" id="L109">        return new UserResponse(</span>
+<span class="nc" id="L110">                user.getId(),</span>
+<span class="nc" id="L111">                user.getName(),</span>
+<span class="nc" id="L112">                user.getEmail(),</span>
+<span class="nc" id="L113">                user.getRole(),</span>
+<span class="nc" id="L114">                user.getActive(),</span>
+<span class="nc" id="L115">                user.getCompany().getId(),</span>
+<span class="nc" id="L116">                user.getCompany().getName(),</span>
+<span class="nc" id="L117">                user.getCreatedAt(),</span>
+<span class="nc" id="L118">                user.getUpdatedAt()</span>
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuditLogFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.shared.web</a> &gt; <span class="el_source">AuditLogFilter.java</span></div><h1>AuditLogFilter.java</h1><pre class="source lang-java linenums">package com.flowcrm.shared.web;
+
+import com.flowcrm.shared.security.UserPrincipal;
+import org.springframework.dao.DataAccessException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.UUID;
+
+public class AuditLogFilter extends OncePerRequestFilter {
+
+<span class="nc" id="L20">    private static final Logger log = LoggerFactory.getLogger(AuditLogFilter.class);</span>
+    private final AuditEventRepository auditEventRepository;
+
+<span class="nc" id="L23">    public AuditLogFilter(AuditEventRepository auditEventRepository) {</span>
+<span class="nc" id="L24">        this.auditEventRepository = auditEventRepository;</span>
+<span class="nc" id="L25">    }</span>
+
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+        try {
+<span class="nc" id="L34">            filterChain.doFilter(request, response);</span>
+        } finally {
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            if (isMutation(request)) {</span>
+<span class="nc" id="L37">                Object principal = authenticatedPrincipal();</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">                if (principal instanceof UserPrincipal user) {</span>
+<span class="nc" id="L39">                    record(request, response, user);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">                } else if (isPublicAuthMutation(request)) {</span>
+<span class="nc" id="L41">                    record(request, response, null);</span>
+                }
+            }
+        }
+<span class="nc" id="L45">    }</span>
+
+    private void record(HttpServletRequest request, HttpServletResponse response, UserPrincipal user) {
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        UUID userId = user == null ? null : user.getUserId();</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        UUID companyId = user == null ? null : user.getCompanyId();</span>
+        try {
+<span class="nc" id="L51">            auditEventRepository.record(</span>
+<span class="nc" id="L52">                    request.getMethod(),</span>
+<span class="nc" id="L53">                    request.getRequestURI(),</span>
+<span class="nc" id="L54">                    response.getStatus(),</span>
+                    userId,
+                    companyId,
+<span class="nc" id="L57">                    request.getRemoteAddr()</span>
+            );
+<span class="nc" id="L59">        } catch (DataAccessException exception) {</span>
+<span class="nc" id="L60">            log.error(</span>
+                    &quot;event=audit_persistence_failed method={} path={} status={} errorType={}&quot;,
+<span class="nc" id="L62">                    request.getMethod(),</span>
+<span class="nc" id="L63">                    request.getRequestURI(),</span>
+<span class="nc" id="L64">                    response.getStatus(),</span>
+<span class="nc" id="L65">                    exception.getClass().getSimpleName()</span>
+            );
+<span class="nc" id="L67">        }</span>
+<span class="nc" id="L68">    }</span>
+
+    private boolean isMutation(HttpServletRequest request) {
+<span class="nc" id="L71">        String method = request.getMethod();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        return request.getRequestURI().startsWith(&quot;/api/&quot;)</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">                &amp;&amp; (&quot;POST&quot;.equals(method)</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">                || &quot;PUT&quot;.equals(method)</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">                || &quot;PATCH&quot;.equals(method)</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                || &quot;DELETE&quot;.equals(method));</span>
+    }
+
+    private boolean isPublicAuthMutation(HttpServletRequest request) {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (!&quot;POST&quot;.equals(request.getMethod())) {</span>
+<span class="nc" id="L81">            return false;</span>
+        }
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        return switch (request.getRequestURI()) {</span>
+<span class="nc" id="L84">            case &quot;/api/v1/auth/login&quot;, &quot;/api/v1/auth/register&quot;, &quot;/api/v1/auth/refresh&quot; -&gt; true;</span>
+<span class="nc" id="L85">            default -&gt; false;</span>
+        };
+    }
+
+    private Object authenticatedPrincipal() {
+<span class="nc" id="L90">        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        return authentication == null ? null : authentication.getPrincipal();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

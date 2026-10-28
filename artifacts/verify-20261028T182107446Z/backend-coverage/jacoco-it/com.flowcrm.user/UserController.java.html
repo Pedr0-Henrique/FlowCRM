@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.user</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.flowcrm.user;
+
+import com.flowcrm.shared.security.UserPrincipal;
+import com.flowcrm.user.dto.UserRequest;
+import com.flowcrm.user.dto.UserResponse;
+import com.flowcrm.user.dto.UserUpdateRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(&quot;/api/v1/users&quot;)
+@Tag(name = &quot;Users&quot;, description = &quot;Gerenciamento de usuários&quot;)
+public class UserController {
+
+    private final UserService userService;
+
+<span class="fc" id="L25">    public UserController(UserService userService) {</span>
+<span class="fc" id="L26">        this.userService = userService;</span>
+<span class="fc" id="L27">    }</span>
+
+    @GetMapping
+    @Operation(summary = &quot;Listar usuários da empresa (ADMIN, MANAGER)&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER')&quot;)
+    public ResponseEntity&lt;List&lt;UserResponse&gt;&gt; findAll(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="fc" id="L33">        return ResponseEntity.ok(userService.findAllByCompanyId(userPrincipal.getCompanyId()));</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Buscar usuário por ID&quot;)
+    public ResponseEntity&lt;UserResponse&gt; findById(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L41">        return ResponseEntity.ok(userService.findById(id, userPrincipal.getCompanyId()));</span>
+    }
+
+    @PostMapping
+    @Operation(summary = &quot;Criar novo usuário (ADMIN, MANAGER)&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER')&quot;)
+    public ResponseEntity&lt;UserResponse&gt; create(
+            @Valid @RequestBody UserRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (userPrincipal.getRole().equals(&quot;MANAGER&quot;) &amp;&amp;</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">                request.role() != null &amp;&amp;</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                request.role() != Role.SALES &amp;&amp;</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">                request.role() != Role.USER) {</span>
+<span class="nc" id="L54">            throw new org.springframework.security.access.AccessDeniedException(</span>
+                    &quot;Managers podem criar apenas usuários SALES ou USER&quot;
+            );
+        }
+
+<span class="nc" id="L59">        UserRequest companyScopedRequest = new UserRequest(</span>
+<span class="nc" id="L60">                userPrincipal.getCompanyId(),</span>
+<span class="nc" id="L61">                request.name(),</span>
+<span class="nc" id="L62">                request.email(),</span>
+<span class="nc" id="L63">                request.password(),</span>
+<span class="nc" id="L64">                request.role(),</span>
+<span class="nc" id="L65">                request.active()</span>
+        );
+<span class="nc" id="L67">        return ResponseEntity.ok(userService.create(companyScopedRequest));</span>
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Atualizar usuário (ADMIN pode alterar qualquer usuário, outros apenas próprio)&quot;)
+    public ResponseEntity&lt;UserResponse&gt; update(
+            @PathVariable UUID id,
+            @Valid @RequestBody UserUpdateRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+<span class="pc bpc" id="L77" title="3 of 4 branches missed.">        if (!userPrincipal.getRole().equals(&quot;ADMIN&quot;) &amp;&amp; !userPrincipal.getUserId().equals(id)) {</span>
+<span class="nc" id="L78">            throw new org.springframework.security.access.AccessDeniedException(&quot;Sem permissão para alterar outro usuário&quot;);</span>
+        }
+
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        UserUpdateRequest scopedRequest = userPrincipal.getRole().equals(&quot;ADMIN&quot;)</span>
+<span class="fc" id="L82">                ? request</span>
+<span class="pc" id="L83">                : new UserUpdateRequest(request.name(), request.email(), request.password(), null, null);</span>
+<span class="fc" id="L84">        return ResponseEntity.ok(userService.update(id, userPrincipal.getCompanyId(), scopedRequest));</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Excluir usuário (ADMIN apenas)&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;Void&gt; delete(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L93">        userService.delete(id, userPrincipal.getCompanyId());</span>
+<span class="nc" id="L94">        return ResponseEntity.noContent().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

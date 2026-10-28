@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClientService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.client</a> &gt; <span class="el_source">ClientService.java</span></div><h1>ClientService.java</h1><pre class="source lang-java linenums">package com.flowcrm.client;
+
+import com.flowcrm.client.dto.ClientRequest;
+import com.flowcrm.client.dto.ClientResponse;
+import com.flowcrm.client.dto.ClientUpdateRequest;
+import com.flowcrm.company.Company;
+import com.flowcrm.company.CompanyRepository;
+import com.flowcrm.shared.exception.ConflictException;
+import com.flowcrm.shared.exception.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class ClientService {
+
+    private final ClientRepository clientRepository;
+    private final CompanyRepository companyRepository;
+
+    public Page&lt;ClientResponse&gt; findAll(UUID companyId, Pageable pageable) {
+<span class="nc" id="L26">        return clientRepository.findByCompanyId(companyId, pageable)</span>
+<span class="nc" id="L27">                .map(this::toResponse);</span>
+    }
+
+    public Page&lt;ClientResponse&gt; findByStatus(UUID companyId, ClientStatus status, Pageable pageable) {
+<span class="nc" id="L31">        return clientRepository.findByCompanyIdAndStatus(companyId, status, pageable)</span>
+<span class="nc" id="L32">                .map(this::toResponse);</span>
+    }
+
+    public Page&lt;ClientResponse&gt; search(UUID companyId, String search, Pageable pageable) {
+<span class="nc bnc" id="L36" title="All 4 branches missed.">        if (search == null || search.isBlank()) {</span>
+<span class="nc" id="L37">            return findAll(companyId, pageable);</span>
+        }
+<span class="nc" id="L39">        return clientRepository.searchByCompanyId(companyId, search, pageable)</span>
+<span class="nc" id="L40">                .map(this::toResponse);</span>
+    }
+
+    public ClientResponse findById(UUID id, UUID companyId) {
+<span class="nc" id="L44">        Client client = clientRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L45">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Cliente não encontrado&quot;));</span>
+<span class="nc" id="L46">        return toResponse(client);</span>
+    }
+
+    @Transactional
+    public ClientResponse create(UUID companyId, ClientRequest request) {
+<span class="nc" id="L51">        Company company = companyRepository.findById(companyId)</span>
+<span class="nc" id="L52">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Empresa não encontrada&quot;));</span>
+
+<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (request.email() != null &amp;&amp; clientRepository.existsByEmailAndCompanyId(request.email(), companyId)) {</span>
+<span class="nc" id="L55">            throw new ConflictException(&quot;E-mail já cadastrado para outro cliente&quot;);</span>
+        }
+
+<span class="nc" id="L58">        Client client = new Client(company, request.name());</span>
+<span class="nc" id="L59">        updateClientFromRequest(client, request);</span>
+<span class="nc" id="L60">        client = clientRepository.save(client);</span>
+<span class="nc" id="L61">        return toResponse(client);</span>
+    }
+
+    @Transactional
+    public ClientResponse update(UUID id, UUID companyId, ClientUpdateRequest request) {
+<span class="nc" id="L66">        Client client = clientRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L67">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Cliente não encontrado&quot;));</span>
+
+<span class="nc bnc" id="L69" title="All 4 branches missed.">        if (request.email() != null &amp;&amp; !request.email().equals(client.getEmail())) {</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (clientRepository.existsByEmailAndCompanyId(request.email(), companyId)) {</span>
+<span class="nc" id="L71">                throw new ConflictException(&quot;E-mail já cadastrado para outro cliente&quot;);</span>
+            }
+        }
+
+<span class="nc" id="L75">        updateClientFromRequest(client, request);</span>
+<span class="nc" id="L76">        client = clientRepository.save(client);</span>
+<span class="nc" id="L77">        return toResponse(client);</span>
+    }
+
+    @Transactional
+    public void delete(UUID id, UUID companyId) {
+<span class="nc" id="L82">        Client client = clientRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L83">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Cliente não encontrado&quot;));</span>
+<span class="nc" id="L84">        clientRepository.delete(client);</span>
+<span class="nc" id="L85">    }</span>
+
+    private void updateClientFromRequest(Client client, Object request) {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (request instanceof ClientRequest req) {</span>
+<span class="nc" id="L89">            client.setEmail(req.email());</span>
+<span class="nc" id="L90">            client.setPhone(req.phone());</span>
+<span class="nc" id="L91">            client.setAddress(req.address());</span>
+<span class="nc" id="L92">            client.setCity(req.city());</span>
+<span class="nc" id="L93">            client.setState(req.state());</span>
+<span class="nc" id="L94">            client.setZipCode(req.zipCode());</span>
+<span class="nc" id="L95">            client.setCountry(req.country());</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            client.setStatus(req.status() != null ? req.status() : ClientStatus.ACTIVE);</span>
+<span class="nc" id="L97">            client.setNotes(req.notes());</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        } else if (request instanceof ClientUpdateRequest req) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (req.name() != null) client.setName(req.name());</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (req.email() != null) client.setEmail(req.email());</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (req.phone() != null) client.setPhone(req.phone());</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            if (req.address() != null) client.setAddress(req.address());</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            if (req.city() != null) client.setCity(req.city());</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (req.state() != null) client.setState(req.state());</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">            if (req.zipCode() != null) client.setZipCode(req.zipCode());</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (req.country() != null) client.setCountry(req.country());</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (req.status() != null) client.setStatus(req.status());</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (req.notes() != null) client.setNotes(req.notes());</span>
+        }
+<span class="nc" id="L110">    }</span>
+
+    private ClientResponse toResponse(Client client) {
+<span class="nc" id="L113">        return new ClientResponse(</span>
+<span class="nc" id="L114">                client.getId(),</span>
+<span class="nc" id="L115">                client.getName(),</span>
+<span class="nc" id="L116">                client.getEmail(),</span>
+<span class="nc" id="L117">                client.getPhone(),</span>
+<span class="nc" id="L118">                client.getAddress(),</span>
+<span class="nc" id="L119">                client.getCity(),</span>
+<span class="nc" id="L120">                client.getState(),</span>
+<span class="nc" id="L121">                client.getZipCode(),</span>
+<span class="nc" id="L122">                client.getCountry(),</span>
+<span class="nc" id="L123">                client.getStatus(),</span>
+<span class="nc" id="L124">                client.getNotes(),</span>
+<span class="nc" id="L125">                client.getCompany().getId(),</span>
+<span class="nc" id="L126">                client.getCreatedAt(),</span>
+<span class="nc" id="L127">                client.getUpdatedAt()</span>
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

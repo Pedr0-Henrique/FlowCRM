@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OpportunityController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.opportunity</a> &gt; <span class="el_source">OpportunityController.java</span></div><h1>OpportunityController.java</h1><pre class="source lang-java linenums">package com.flowcrm.opportunity;
+
+import com.flowcrm.opportunity.dto.OpportunityRequest;
+import com.flowcrm.opportunity.dto.OpportunityResponse;
+import com.flowcrm.opportunity.dto.OpportunityUpdateRequest;
+import com.flowcrm.shared.security.UserPrincipal;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping(&quot;/api/v1/opportunities&quot;)
+@Tag(name = &quot;Opportunities&quot;, description = &quot;Gerenciamento de oportunidades de vendas&quot;)
+public class OpportunityController {
+
+    private final OpportunityService opportunityService;
+
+<span class="nc" id="L26">    public OpportunityController(OpportunityService opportunityService) {</span>
+<span class="nc" id="L27">        this.opportunityService = opportunityService;</span>
+<span class="nc" id="L28">    }</span>
+
+    @GetMapping
+    @Operation(summary = &quot;Listar oportunidades com paginação, busca e filtros&quot;)
+    public ResponseEntity&lt;Page&lt;OpportunityResponse&gt;&gt; findAll(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam(defaultValue = &quot;0&quot;) int page,
+            @RequestParam(defaultValue = &quot;10&quot;) int size,
+            @RequestParam(defaultValue = &quot;title&quot;) String sortBy,
+            @RequestParam(defaultValue = &quot;asc&quot;) String sortDir,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) OpportunityStage stage,
+            @RequestParam(required = false) UUID client,
+            @RequestParam(required = false) UUID lead,
+            @RequestParam(required = false) UUID assignedTo) {
+
+<span class="nc" id="L44">        Pageable pageable = com.flowcrm.shared.web.PageRequests.create(page, size, sortBy, sortDir, Opportunity.class);</span>
+
+        Page&lt;OpportunityResponse&gt; result;
+<span class="nc bnc" id="L47" title="All 4 branches missed.">        if (search != null &amp;&amp; !search.isBlank()) {</span>
+<span class="nc" id="L48">            result = opportunityService.search(userPrincipal.getCompanyId(), search, pageable);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        } else if (stage != null) {</span>
+<span class="nc" id="L50">            result = opportunityService.findByStage(userPrincipal.getCompanyId(), stage, pageable);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        } else if (client != null) {</span>
+<span class="nc" id="L52">            result = opportunityService.findByClient(userPrincipal.getCompanyId(), client, pageable);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        } else if (lead != null) {</span>
+<span class="nc" id="L54">            result = opportunityService.findByLead(userPrincipal.getCompanyId(), lead, pageable);</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        } else if (assignedTo != null) {</span>
+<span class="nc" id="L56">            result = opportunityService.findByAssignedTo(userPrincipal.getCompanyId(), assignedTo, pageable);</span>
+        } else {
+<span class="nc" id="L58">            result = opportunityService.findAll(userPrincipal.getCompanyId(), pageable);</span>
+        }
+
+<span class="nc" id="L61">        return ResponseEntity.ok(result);</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Buscar oportunidade por ID&quot;)
+    public ResponseEntity&lt;OpportunityResponse&gt; findById(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L69">        return ResponseEntity.ok(opportunityService.findById(id, userPrincipal.getCompanyId()));</span>
+    }
+
+    @PostMapping
+    @Operation(summary = &quot;Criar nova oportunidade&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES')&quot;)
+    public ResponseEntity&lt;OpportunityResponse&gt; create(
+            @Valid @RequestBody OpportunityRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L78">        return ResponseEntity.ok(opportunityService.create(userPrincipal.getCompanyId(), request));</span>
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Atualizar oportunidade&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES')&quot;)
+    public ResponseEntity&lt;OpportunityResponse&gt; update(
+            @PathVariable UUID id,
+            @Valid @RequestBody OpportunityUpdateRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L88">        return ResponseEntity.ok(opportunityService.update(id, userPrincipal.getCompanyId(), request));</span>
+    }
+
+    @PatchMapping(&quot;/{id}/stage&quot;)
+    @Operation(summary = &quot;Atualizar estágio da oportunidade (para pipeline)&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES')&quot;)
+    public ResponseEntity&lt;OpportunityResponse&gt; updateStage(
+            @PathVariable UUID id,
+            @RequestParam OpportunityStage stage,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L98">        OpportunityUpdateRequest request = new OpportunityUpdateRequest(null, null, null, stage, null, null, null, null, null, null, null);</span>
+<span class="nc" id="L99">        return ResponseEntity.ok(opportunityService.update(id, userPrincipal.getCompanyId(), request));</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Excluir oportunidade&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER')&quot;)
+    public ResponseEntity&lt;Void&gt; delete(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L108">        opportunityService.delete(id, userPrincipal.getCompanyId());</span>
+<span class="nc" id="L109">        return ResponseEntity.noContent().build();</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

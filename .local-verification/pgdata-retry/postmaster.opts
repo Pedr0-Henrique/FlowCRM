@@ -1,0 +1,1 @@
+C:/Program Files/PostgreSQL/17/bin/postgres.exe "-D" ".local-verification/pgdata-retry" "-h" "127.0.0.1" "-p" "55432"

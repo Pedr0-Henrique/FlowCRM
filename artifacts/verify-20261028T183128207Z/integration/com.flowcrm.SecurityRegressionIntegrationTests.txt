@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.flowcrm.SecurityRegressionIntegrationTests
+-------------------------------------------------------------------------------
+Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.854 s -- in com.flowcrm.SecurityRegressionIntegrationTests

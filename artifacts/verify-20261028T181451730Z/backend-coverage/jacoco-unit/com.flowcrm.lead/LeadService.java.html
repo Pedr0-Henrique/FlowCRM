@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LeadService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.lead</a> &gt; <span class="el_source">LeadService.java</span></div><h1>LeadService.java</h1><pre class="source lang-java linenums">package com.flowcrm.lead;
+
+import com.flowcrm.company.Company;
+import com.flowcrm.company.CompanyRepository;
+import com.flowcrm.lead.dto.LeadRequest;
+import com.flowcrm.lead.dto.LeadResponse;
+import com.flowcrm.lead.dto.LeadUpdateRequest;
+import com.flowcrm.shared.exception.ConflictException;
+import com.flowcrm.shared.exception.ResourceNotFoundException;
+import com.flowcrm.user.User;
+import com.flowcrm.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class LeadService {
+
+    private final LeadRepository leadRepository;
+    private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
+
+    public Page&lt;LeadResponse&gt; findAll(UUID companyId, Pageable pageable) {
+<span class="nc" id="L29">        return leadRepository.findByCompanyId(companyId, pageable)</span>
+<span class="nc" id="L30">                .map(this::toResponse);</span>
+    }
+
+    public Page&lt;LeadResponse&gt; findByStatus(UUID companyId, LeadStatus status, Pageable pageable) {
+<span class="nc" id="L34">        return leadRepository.findByCompanyIdAndStatus(companyId, status, pageable)</span>
+<span class="nc" id="L35">                .map(this::toResponse);</span>
+    }
+
+    public Page&lt;LeadResponse&gt; findByPriority(UUID companyId, LeadPriority priority, Pageable pageable) {
+<span class="nc" id="L39">        return leadRepository.findByCompanyIdAndPriority(companyId, priority, pageable)</span>
+<span class="nc" id="L40">                .map(this::toResponse);</span>
+    }
+
+    public Page&lt;LeadResponse&gt; findByAssignedTo(UUID companyId, UUID assignedToId, Pageable pageable) {
+<span class="nc" id="L44">        return leadRepository.findByCompanyIdAndAssignedToId(companyId, assignedToId, pageable)</span>
+<span class="nc" id="L45">                .map(this::toResponse);</span>
+    }
+
+    public Page&lt;LeadResponse&gt; search(UUID companyId, String search, Pageable pageable) {
+<span class="nc bnc" id="L49" title="All 4 branches missed.">        if (search == null || search.isBlank()) {</span>
+<span class="nc" id="L50">            return findAll(companyId, pageable);</span>
+        }
+<span class="nc" id="L52">        return leadRepository.searchByCompanyId(companyId, search, pageable)</span>
+<span class="nc" id="L53">                .map(this::toResponse);</span>
+    }
+
+    public LeadResponse findById(UUID id, UUID companyId) {
+<span class="nc" id="L57">        Lead lead = leadRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L58">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Lead não encontrado&quot;));</span>
+<span class="nc" id="L59">        return toResponse(lead);</span>
+    }
+
+    @Transactional
+    public LeadResponse create(UUID companyId, LeadRequest request) {
+<span class="nc" id="L64">        Company company = companyRepository.findById(companyId)</span>
+<span class="nc" id="L65">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Empresa não encontrada&quot;));</span>
+
+<span class="nc bnc" id="L67" title="All 4 branches missed.">        if (request.email() != null &amp;&amp; leadRepository.existsByEmailAndCompanyId(request.email(), companyId)) {</span>
+<span class="nc" id="L68">            throw new ConflictException(&quot;E-mail já cadastrado para outro lead&quot;);</span>
+        }
+
+<span class="nc" id="L71">        User assignedTo = null;</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (request.assignedToId() != null) {</span>
+<span class="nc" id="L73">            assignedTo = userRepository.findByIdAndCompanyId(request.assignedToId(), companyId)</span>
+<span class="nc" id="L74">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Responsável não encontrado&quot;));</span>
+        }
+
+<span class="nc" id="L77">        Lead lead = new Lead(company, request.name());</span>
+<span class="nc" id="L78">        updateLeadFromRequest(lead, request);</span>
+<span class="nc" id="L79">        lead.setAssignedTo(assignedTo);</span>
+<span class="nc" id="L80">        lead = leadRepository.save(lead);</span>
+<span class="nc" id="L81">        return toResponse(lead);</span>
+    }
+
+    @Transactional
+    public LeadResponse update(UUID id, UUID companyId, LeadUpdateRequest request) {
+<span class="nc" id="L86">        Lead lead = leadRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L87">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Lead não encontrado&quot;));</span>
+
+<span class="nc bnc" id="L89" title="All 4 branches missed.">        if (request.email() != null &amp;&amp; !request.email().equals(lead.getEmail())) {</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (leadRepository.existsByEmailAndCompanyId(request.email(), companyId)) {</span>
+<span class="nc" id="L91">                throw new ConflictException(&quot;E-mail já cadastrado para outro lead&quot;);</span>
+            }
+        }
+
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (request.assignedToId() != null) {</span>
+<span class="nc" id="L96">            User assignedTo = userRepository.findByIdAndCompanyId(request.assignedToId(), companyId)</span>
+<span class="nc" id="L97">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Responsável não encontrado&quot;));</span>
+<span class="nc" id="L98">            lead.setAssignedTo(assignedTo);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        } else if (request.assignedToId() == null) {</span>
+<span class="nc" id="L100">            lead.setAssignedTo(null);</span>
+        }
+
+<span class="nc" id="L103">        updateLeadFromRequest(lead, request);</span>
+<span class="nc" id="L104">        lead = leadRepository.save(lead);</span>
+<span class="nc" id="L105">        return toResponse(lead);</span>
+    }
+
+    @Transactional
+    public void delete(UUID id, UUID companyId) {
+<span class="nc" id="L110">        Lead lead = leadRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="nc" id="L111">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Lead não encontrado&quot;));</span>
+<span class="nc" id="L112">        leadRepository.delete(lead);</span>
+<span class="nc" id="L113">    }</span>
+
+    private void updateLeadFromRequest(Lead lead, Object request) {
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (request instanceof LeadRequest req) {</span>
+<span class="nc" id="L117">            lead.setEmail(req.email());</span>
+<span class="nc" id="L118">            lead.setPhone(req.phone());</span>
+<span class="nc" id="L119">            lead.setSource(req.source());</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            lead.setStatus(req.status() != null ? req.status() : LeadStatus.NEW);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            lead.setPriority(req.priority() != null ? req.priority() : LeadPriority.MEDIUM);</span>
+<span class="nc" id="L122">            lead.setEstimatedValue(req.estimatedValue());</span>
+<span class="nc" id="L123">            lead.setNotes(req.notes());</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        } else if (request instanceof LeadUpdateRequest req) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            if (req.name() != null) lead.setName(req.name());</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            if (req.email() != null) lead.setEmail(req.email());</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            if (req.phone() != null) lead.setPhone(req.phone());</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (req.source() != null) lead.setSource(req.source());</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            if (req.status() != null) lead.setStatus(req.status());</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (req.priority() != null) lead.setPriority(req.priority());</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">            if (req.estimatedValue() != null) lead.setEstimatedValue(req.estimatedValue());</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            if (req.notes() != null) lead.setNotes(req.notes());</span>
+        }
+<span class="nc" id="L134">    }</span>
+
+    private LeadResponse toResponse(Lead lead) {
+<span class="nc" id="L137">        return new LeadResponse(</span>
+<span class="nc" id="L138">                lead.getId(),</span>
+<span class="nc" id="L139">                lead.getName(),</span>
+<span class="nc" id="L140">                lead.getEmail(),</span>
+<span class="nc" id="L141">                lead.getPhone(),</span>
+<span class="nc" id="L142">                lead.getSource(),</span>
+<span class="nc" id="L143">                lead.getStatus(),</span>
+<span class="nc" id="L144">                lead.getPriority(),</span>
+<span class="nc" id="L145">                lead.getEstimatedValue(),</span>
+<span class="nc" id="L146">                lead.getNotes(),</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">                lead.getAssignedTo() != null ? lead.getAssignedTo().getId() : null,</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                lead.getAssignedTo() != null ? lead.getAssignedTo().getName() : null,</span>
+<span class="nc" id="L149">                lead.getCompany().getId(),</span>
+<span class="nc" id="L150">                lead.getCreatedAt(),</span>
+<span class="nc" id="L151">                lead.getUpdatedAt()</span>
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

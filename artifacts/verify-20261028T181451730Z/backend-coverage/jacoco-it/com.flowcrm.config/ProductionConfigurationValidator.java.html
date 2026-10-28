@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductionConfigurationValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.config</a> &gt; <span class="el_source">ProductionConfigurationValidator.java</span></div><h1>ProductionConfigurationValidator.java</h1><pre class="source lang-java linenums">package com.flowcrm.config;
+
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+@Component
+@Profile(&quot;prod&quot;)
+public class ProductionConfigurationValidator implements InitializingBean {
+
+    private static final String DEVELOPMENT_JWT_SECRET =
+            &quot;flowcrm-secret-key-for-development-change-in-production-min-256-bits&quot;;
+
+    private final String jwtSecret;
+    private final String databasePassword;
+    private final String allowedOrigins;
+
+    public ProductionConfigurationValidator(
+            @Value(&quot;${app.jwt.secret}&quot;) String jwtSecret,
+            @Value(&quot;${spring.datasource.password}&quot;) String databasePassword,
+            @Value(&quot;${app.cors.allowed-origins}&quot;) String allowedOrigins
+<span class="nc" id="L27">    ) {</span>
+<span class="nc" id="L28">        this.jwtSecret = jwtSecret;</span>
+<span class="nc" id="L29">        this.databasePassword = databasePassword;</span>
+<span class="nc" id="L30">        this.allowedOrigins = allowedOrigins;</span>
+<span class="nc" id="L31">    }</span>
+
+    @Override
+    public void afterPropertiesSet() {
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (jwtSecret.getBytes(StandardCharsets.UTF_8).length &lt; 32</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">                || DEVELOPMENT_JWT_SECRET.equals(jwtSecret)</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                || &quot;change-me-in-local-env-use-at-least-256-bits&quot;.equals(jwtSecret)</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">                || jwtSecret.startsWith(&quot;REPLACE_WITH_&quot;)) {</span>
+<span class="nc" id="L39">            throw new IllegalStateException(&quot;Production requires a unique JWT_SECRET with at least 256 bits&quot;);</span>
+        }
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (databasePassword.length() &lt; 24</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">                || &quot;flowcrm&quot;.equals(databasePassword)</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">                || databasePassword.startsWith(&quot;REPLACE_WITH_&quot;)) {</span>
+<span class="nc" id="L44">            throw new IllegalStateException(&quot;Production requires a strong, unique database password&quot;);</span>
+        }
+
+<span class="nc" id="L47">        boolean hasInvalidOrigin = Arrays.stream(allowedOrigins.split(&quot;,&quot;))</span>
+<span class="nc" id="L48">                .map(String::trim)</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                .anyMatch(origin -&gt; !isSecureOrigin(origin));</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (hasInvalidOrigin) {</span>
+<span class="nc" id="L51">            throw new IllegalStateException(&quot;Production CORS origins must be explicit HTTPS origins&quot;);</span>
+        }
+<span class="nc" id="L53">    }</span>
+
+    private boolean isSecureOrigin(String value) {
+        try {
+<span class="nc" id="L57">            URI origin = URI.create(value);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            return &quot;https&quot;.equalsIgnoreCase(origin.getScheme())</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                    &amp;&amp; origin.getHost() != null</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">                    &amp;&amp; origin.getUserInfo() == null</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                    &amp;&amp; origin.getPath().isEmpty()</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                    &amp;&amp; origin.getQuery() == null</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                    &amp;&amp; origin.getFragment() == null;</span>
+<span class="nc" id="L64">        } catch (IllegalArgumentException exception) {</span>
+<span class="nc" id="L65">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

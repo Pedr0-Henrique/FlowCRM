@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PageRequests.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.shared.web</a> &gt; <span class="el_source">PageRequests.java</span></div><h1>PageRequests.java</h1><pre class="source lang-java linenums">package com.flowcrm.shared.web;
+
+import com.flowcrm.shared.exception.InvalidParameterException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
+public final class PageRequests {
+    private PageRequests() {}
+
+    public static PageRequest create(int page, int size, String sortBy, String direction, Class&lt;?&gt; entity) {
+<span class="fc bfc" id="L11" title="All 6 branches covered.">        if (page &lt; 0 || size &lt; 1 || size &gt; 100) {</span>
+<span class="fc" id="L12">            throw new InvalidParameterException(&quot;Página deve ser não negativa e tamanho entre 1 e 100.&quot;);</span>
+        }
+<span class="pc bpc" id="L14" title="1 of 4 branches missed.">        if (!&quot;asc&quot;.equalsIgnoreCase(direction) &amp;&amp; !&quot;desc&quot;.equalsIgnoreCase(direction)) {</span>
+<span class="nc" id="L15">            throw new InvalidParameterException(&quot;Direção de ordenação inválida.&quot;);</span>
+        }
+        try {
+<span class="fc" id="L18">            var field = entity.getDeclaredField(sortBy);</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">            if (!field.isAnnotationPresent(jakarta.persistence.Column.class)</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">                    &amp;&amp; !field.isAnnotationPresent(jakarta.persistence.Id.class)) {</span>
+<span class="nc" id="L21">                throw new NoSuchFieldException(sortBy);</span>
+            }
+<span class="fc" id="L23">        } catch (NoSuchFieldException exception) {</span>
+<span class="fc" id="L24">            throw new InvalidParameterException(&quot;Campo de ordenação inválido.&quot;);</span>
+<span class="fc" id="L25">        }</span>
+<span class="fc" id="L26">        return PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sortBy));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

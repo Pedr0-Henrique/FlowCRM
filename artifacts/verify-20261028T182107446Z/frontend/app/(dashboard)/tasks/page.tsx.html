@@ -1,0 +1,421 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for app/(dashboard)/tasks/page.tsx</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">app/(dashboard)/tasks</a> page.tsx</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/75</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/64</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/32</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/51</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >"use client";</span>
+&nbsp;
+import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Check, Pencil, Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { Dialog } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { getUser } from "@/lib/auth";
+import { completeTask, createTask, deleteTask, getTasks, isTaskOverdue, updateTask, type Task, type TaskPriority, type TaskRequest, type TaskStatus } from "@/lib/tasks";
+import { getUsers } from "@/lib/users";
+&nbsp;
+const emptyForm: TaskRequest = <span class="cstat-no" title="statement not covered" >{ title: "", description: null, status: "TODO", priority: "MEDIUM", dueDate: null, assignedToId: null, clientId: null, leadId: null };</span>
+const statuses: TaskStatus[] = <span class="cstat-no" title="statement not covered" >["TODO", "IN_PROGRESS", "COMPLETED", "CANCELLED"];</span>
+const priorities: TaskPriority[] = <span class="cstat-no" title="statement not covered" >["LOW", "MEDIUM", "HIGH", "URGENT"];</span>
+const statusLabels: Record&lt;TaskStatus, string&gt; = <span class="cstat-no" title="statement not covered" >{</span>
+  TODO: "A fazer",
+  IN_PROGRESS: "Em andamento",
+  COMPLETED: "Concluída",
+  CANCELLED: "Cancelada",
+};
+const priorityLabels: Record&lt;TaskPriority, string&gt; = <span class="cstat-no" title="statement not covered" >{</span>
+  LOW: "Baixa",
+  MEDIUM: "Média",
+  HIGH: "Alta",
+  URGENT: "Urgente",
+};
+&nbsp;
+function <span class="fstat-no" title="function not covered" >toLocalDateTimeValue(v</span>alue: string | null): string {
+<span class="cstat-no" title="statement not covered" >  if (!value) <span class="cstat-no" title="statement not covered" >return "";</span></span>
+  const date = <span class="cstat-no" title="statement not covered" >new Date(value);</span>
+  const localDate = <span class="cstat-no" title="statement not covered" >new Date(date.getTime() - date.getTimezoneOffset() * 60_000);</span>
+<span class="cstat-no" title="statement not covered" >  return localDate.toISOString().slice(0, 16);</span>
+}
+&nbsp;
+export default function <span class="fstat-no" title="function not covered" >TasksPage() {</span>
+  const [form, setForm] = <span class="cstat-no" title="statement not covered" >useState(emptyForm);</span>
+  const [selected, setSelected] = <span class="cstat-no" title="statement not covered" >useState&lt;Task | null&gt;(null);</span>
+  const [deleteTarget, setDeleteTarget] = <span class="cstat-no" title="statement not covered" >useState&lt;{ id: string; title: string } | null&gt;(null);</span>
+  const [open, setOpen] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+  const [now, setNow] = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useState(() =&gt; <span class="cstat-no" title="statement not covered" >D</span>ate.now())</span>;</span>
+  const queryClient = <span class="cstat-no" title="statement not covered" >useQueryClient()</span>;
+  const role = <span class="cstat-no" title="statement not covered" >getUser()?.role;</span>
+  const currentUserId = <span class="cstat-no" title="statement not covered" >getUser()?.userId ?? null;</span>
+  const canDelete = <span class="cstat-no" title="statement not covered" >role === "ADMIN" || role === "MANAGER";</span>
+  const canAssign = <span class="cstat-no" title="statement not covered" >canDelete;</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  useEffect(() =&gt; {</span></span>
+    const interval = <span class="cstat-no" title="statement not covered" >window.<span class="fstat-no" title="function not covered" >setInterval(() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etNow(Date.now()), 6</span>0_000);</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    return () =&gt; <span class="cstat-no" title="statement not covered" >w</span>indow.clearInterval(interval);</span></span>
+  }, []);
+  const query = <span class="cstat-no" title="statement not covered" >useQuery({ queryKey: ["tasks"], <span class="fstat-no" title="function not covered" >queryFn: () =&gt; <span class="cstat-no" title="statement not covered" >g</span>etTasks(0, 100) }</span>);</span>
+  const users = <span class="cstat-no" title="statement not covered" >useQuery({ queryKey: ["users"], queryFn: getUsers, enabled: canAssign });</span>
+  const <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >refresh = () =&gt; <span class="cstat-no" title="statement not covered" >q</span>ueryClient.invalidateQueries({ queryKey: ["tasks"] });</span></span>
+  const save = <span class="cstat-no" title="statement not covered" >useMutation({</span>
+<span class="fstat-no" title="function not covered" >    mutationFn: () =&gt; {</span>
+      const request = <span class="cstat-no" title="statement not covered" >{</span>
+        ...form,
+        assignedToId: canAssign ? form.assignedToId : currentUserId,
+      };
+<span class="cstat-no" title="statement not covered" >      return selected ? updateTask(selected.id, request) : createTask(request);</span>
+    },
+    onSuccess: <span class="fstat-no" title="function not covered" >async () =&gt; {</span> <span class="cstat-no" title="statement not covered" >await refresh(); <span class="cstat-no" title="statement not covered" >s</span>etOpen(false); <span class="cstat-no" title="statement not covered" >s</span>etSelected(null); <span class="cstat-no" title="statement not covered" >s</span>etForm(emptyForm); }</span>,
+  });
+  const complete = <span class="cstat-no" title="statement not covered" >useMutation({ mutationFn: completeTask, onSuccess: refresh });</span>
+  const remove = <span class="cstat-no" title="statement not covered" >useMutation({</span>
+    mutationFn: deleteTask,
+    onSuccess: <span class="fstat-no" title="function not covered" >async () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      setDeleteTarget(null);</span>
+<span class="cstat-no" title="statement not covered" >      await refresh();</span>
+    },
+  });
+  const <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >edit = (t</span>ask: Task) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    setSelected(task);</span>
+<span class="cstat-no" title="statement not covered" >    setForm({ title: task.title, description: task.description, status: task.status, priority: task.priority, dueDate: task.dueDate, assignedToId: task.assignedToId, clientId: task.clientId, leadId: task.leadId });</span>
+<span class="cstat-no" title="statement not covered" >    save.reset();</span>
+<span class="cstat-no" title="statement not covered" >    setOpen(true);</span>
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;section className="space-y-6"&gt;
+      &lt;header className="flex items-center justify-between"&gt;&lt;div&gt;&lt;h1 className="text-2xl font-bold"&gt;Tarefas&lt;/h1&gt;&lt;p className="text-muted-foreground"&gt;Organize pendências, prazos e prioridades.&lt;/p&gt;&lt;/div&gt;&lt;Button <span class="fstat-no" title="function not covered" >onClick={() =&gt; {</span> <span class="cstat-no" title="statement not covered" >save.reset(); <span class="cstat-no" title="statement not covered" >s</span>etSelected(null); <span class="cstat-no" title="statement not covered" >s</span>etForm({ ...emptyForm, assignedToId: currentUserId }); <span class="cstat-no" title="statement not covered" >s</span>etOpen(true); }</span>}&gt;&lt;Plus className="h-4 w-4" /&gt; Nova tarefa&lt;/Button&gt;&lt;/header&gt;
+      {query.isError &amp;&amp; &lt;p role="alert" className="text-destructive"&gt;{query.error.message}&lt;/p&gt;}
+      {save.isError &amp;&amp; &lt;p role="alert" className="text-destructive"&gt;{save.error.message}&lt;/p&gt;}
+      {complete.isError &amp;&amp; &lt;p role="alert" className="text-destructive"&gt;{complete.error.message}&lt;/p&gt;}
+      {remove.isError &amp;&amp; &lt;p role="alert" className="text-destructive"&gt;{remove.error.message}&lt;/p&gt;}
+      &lt;div className="overflow-x-auto rounded-xl border border-border bg-card"&gt;&lt;table className="w-full text-sm"&gt;&lt;thead className="bg-muted/50 text-left"&gt;&lt;tr&gt;&lt;th className="p-4"&gt;Tarefa&lt;/th&gt;&lt;th className="p-4"&gt;Responsável&lt;/th&gt;&lt;th className="p-4"&gt;Prazo&lt;/th&gt;&lt;th className="p-4"&gt;Prioridade&lt;/th&gt;&lt;th className="p-4"&gt;Status&lt;/th&gt;&lt;th className="p-4 text-right"&gt;Ações&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody className="divide-y divide-border"&gt;
+        {query.data?.content.<span class="fstat-no" title="function not covered" >map((t</span>ask) =&gt; {
+          const overdue = <span class="cstat-no" title="statement not covered" >isTaskOverdue(task, now);</span>
+<span class="cstat-no" title="statement not covered" >          return &lt;tr key={task.id}&gt;&lt;td className="p-4"&gt;&lt;div className="font-medium"&gt;{task.title}&lt;/div&gt;{task.description &amp;&amp; &lt;div className="text-xs text-muted-foreground"&gt;{task.description}&lt;/div&gt;}&lt;/td&gt;&lt;td className="p-4"&gt;{task.assignedToName ?? "-"}&lt;/td&gt;&lt;td className="p-4"&gt;&lt;div&gt;{task.dueDate ? new Date(task.dueDate).toLocaleString("pt-BR") : "-"}&lt;/div&gt;{overdue &amp;&amp; &lt;span className="mt-1 inline-flex rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-950 dark:text-red-300"&gt;Em atraso&lt;/span&gt;}&lt;/td&gt;&lt;td className="p-4"&gt;{priorityLabels[task.priority]}&lt;/td&gt;&lt;td className="p-4"&gt;&lt;span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${task.status === "COMPLETED" ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300" : task.status === "CANCELLED" ? "bg-muted text-muted-foreground" : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"}`}&gt;{statusLabels[task.status]}&lt;/span&gt;&lt;/td&gt;&lt;td className="p-4"&gt;&lt;div className="flex justify-end gap-1"&gt;{task.status !== "COMPLETED" &amp;&amp; task.status !== "CANCELLED" &amp;&amp; &lt;Button variant="ghost" size="icon" aria-label={`Concluir ${task.title}`} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >c</span>omplete.mutate(task.id)}&gt;&lt;</span>Check className="h-4 w-4" /&gt;&lt;/Button&gt;}&lt;Button variant="ghost" size="icon" aria-label={`Editar ${task.title}`} <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >e</span>dit(task)}&gt;&lt;</span>Pencil className="h-4 w-4" /&gt;&lt;/Button&gt;{canDelete &amp;&amp; &lt;Button variant="ghost" size="icon" aria-label={`Excluir ${task.title}`} disabled={remove.isPending} <span class="fstat-no" title="function not covered" >onClick={() =&gt; {</span> <span class="cstat-no" title="statement not covered" >remove.reset(); <span class="cstat-no" title="statement not covered" >s</span>etDeleteTarget({ id: task.id, title: task.title }); }</span>}&gt;&lt;Trash2 className="h-4 w-4" /&gt;&lt;/Button&gt;}&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;;</span>
+        })}
+        {query.isLoading &amp;&amp; &lt;tr&gt;&lt;td colSpan={6} className="p-6 text-center"&gt;Carregando...&lt;/td&gt;&lt;/tr&gt;}
+        {!query.isLoading &amp;&amp; !query.data?.content.length &amp;&amp; &lt;tr&gt;&lt;td colSpan={6} className="p-6 text-center text-muted-foreground"&gt;Nenhuma tarefa cadastrada.&lt;/td&gt;&lt;/tr&gt;}
+      &lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+      {open &amp;&amp; &lt;Dialog title={selected ? "Editar tarefa" : "Nova tarefa"} <span class="fstat-no" title="function not covered" >onClose={() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etOpen(false)}&gt;&lt;</span>form className="space-y-4" <span class="fstat-no" title="function not covered" >onSubmit={(e</span>vent) =&gt; { <span class="cstat-no" title="statement not covered" >event.preventDefault(); <span class="cstat-no" title="statement not covered" >s</span>ave.mutate(); }</span>}&gt;
+        &lt;label className="block space-y-1 text-sm"&gt;Título *&lt;Input required maxLength={200} value={form.title} <span class="fstat-no" title="function not covered" >onChange={(e</span>vent) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, title: event.target.value })} /&gt;</span>&lt;/label&gt;
+        &lt;div className="grid gap-4 sm:grid-cols-2"&gt;&lt;label className="block space-y-1 text-sm"&gt;Status&lt;select className="h-10 w-full rounded-lg border border-border bg-background px-3" value={form.status} <span class="fstat-no" title="function not covered" >onChange={(e</span>vent) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, status: event.target.value as TaskStatus })}&gt;{s</span>tatuses.<span class="fstat-no" title="function not covered" >map((s</span>tatus) =&gt; <span class="cstat-no" title="statement not covered" >&lt;option key={status} value={status}&gt;{statusLabels[status]}&lt;/option&gt;)</span>}&lt;/select&gt;&lt;/label&gt;&lt;label className="block space-y-1 text-sm"&gt;Prioridade&lt;select className="h-10 w-full rounded-lg border border-border bg-background px-3" value={form.priority} <span class="fstat-no" title="function not covered" >onChange={(e</span>vent) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, priority: event.target.value as TaskPriority })}&gt;{p</span>riorities.<span class="fstat-no" title="function not covered" >map((p</span>riority) =&gt; <span class="cstat-no" title="statement not covered" >&lt;option key={priority} value={priority}&gt;{priorityLabels[priority]}&lt;/option&gt;)</span>}&lt;/select&gt;&lt;/label&gt;&lt;label className="block space-y-1 text-sm sm:col-span-2"&gt;Prazo&lt;Input type="datetime-local" value={toLocalDateTimeValue(form.dueDate)} <span class="fstat-no" title="function not covered" >onChange={(e</span>vent) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, dueDate: event.target.value ? new Date(event.target.value).toISOString() : null })} /&gt;</span>&lt;span className="block text-xs text-muted-foreground"&gt;Tarefas não concluídas ou canceladas serão marcadas como em atraso automaticamente após o prazo.&lt;/span&gt;&lt;/label&gt;&lt;/div&gt;
+        {canAssign &amp;&amp; &lt;label className="block space-y-1 text-sm"&gt;Responsável&lt;select className="h-10 w-full rounded-lg border border-border bg-background px-3" value={form.assignedToId ?? ""} <span class="fstat-no" title="function not covered" >onChange={(e</span>vent) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, assignedToId: event.target.value || null })} d</span>isabled={users.isLoading || users.isError}&gt;&lt;option value=""&gt;Sem responsável&lt;/option&gt;{users.data?.<span class="fstat-no" title="function not covered" >filter((u</span>ser) =&gt; <span class="cstat-no" title="statement not covered" >user.active)</span>.<span class="fstat-no" title="function not covered" >map((u</span>ser) =&gt; <span class="cstat-no" title="statement not covered" >&lt;option key={user.id} value={user.id}&gt;{user.name} · {user.role}&lt;/option&gt;)</span>}&lt;/select&gt;{users.isError &amp;&amp; &lt;span role="alert" className="block text-xs text-destructive"&gt;Não foi possível carregar os funcionários. Tente novamente.&lt;/span&gt;}&lt;/label&gt;}
+        &lt;label className="block space-y-1 text-sm"&gt;Descrição&lt;textarea className="min-h-24 w-full rounded-lg border border-border bg-background px-3 py-2" value={form.description ?? ""} <span class="fstat-no" title="function not covered" >onChange={(e</span>vent) =&gt; <span class="cstat-no" title="statement not covered" >setForm({ ...form, description: event.target.value || null })} /&gt;</span>&lt;/label&gt;
+        &lt;div className="flex justify-end gap-2"&gt;&lt;Button type="button" variant="outline" <span class="fstat-no" title="function not covered" >onClick={() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etOpen(false)}&gt;C</span>ancelar&lt;/Button&gt;&lt;Button disabled={save.isPending}&gt;{save.isPending ? "Salvando..." : "Salvar"}&lt;/Button&gt;&lt;/div&gt;
+      &lt;/form&gt;&lt;/Dialog&gt;}
+      {deleteTarget &amp;&amp; &lt;ConfirmDialog
+        title="Excluir tarefa?"
+        description="Esta tarefa será removida permanentemente. Esta ação não pode ser desfeita."
+        itemName={deleteTarget.title}
+        isPending={remove.isPending}
+<span class="fstat-no" title="function not covered" >        onCancel={() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etDeleteTarget(null)}</span>
+<span class="fstat-no" title="function not covered" >        onConfirm={() =&gt; <span class="cstat-no" title="statement not covered" >r</span>emove.mutate(deleteTarget.id)}</span>
+      /&gt;}
+    &lt;/section&gt;
+  );
+}
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-10-28T18:22:04.733Z
+            </div>
+        <script src="../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
+    </body>
+</html>
+    

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LeadController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.lead</a> &gt; <span class="el_source">LeadController.java</span></div><h1>LeadController.java</h1><pre class="source lang-java linenums">package com.flowcrm.lead;
+
+import com.flowcrm.lead.dto.LeadRequest;
+import com.flowcrm.lead.dto.LeadResponse;
+import com.flowcrm.lead.dto.LeadUpdateRequest;
+import com.flowcrm.shared.security.UserPrincipal;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping(&quot;/api/v1/leads&quot;)
+@Tag(name = &quot;Leads&quot;, description = &quot;Gerenciamento de leads com pipeline&quot;)
+public class LeadController {
+
+    private final LeadService leadService;
+
+<span class="nc" id="L26">    public LeadController(LeadService leadService) {</span>
+<span class="nc" id="L27">        this.leadService = leadService;</span>
+<span class="nc" id="L28">    }</span>
+
+    @GetMapping
+    @Operation(summary = &quot;Listar leads com paginação, busca e filtros&quot;)
+    public ResponseEntity&lt;Page&lt;LeadResponse&gt;&gt; findAll(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam(defaultValue = &quot;0&quot;) int page,
+            @RequestParam(defaultValue = &quot;10&quot;) int size,
+            @RequestParam(defaultValue = &quot;name&quot;) String sortBy,
+            @RequestParam(defaultValue = &quot;asc&quot;) String sortDir,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) LeadStatus status,
+            @RequestParam(required = false) LeadPriority priority,
+            @RequestParam(required = false) UUID assignedTo) {
+
+<span class="nc" id="L43">        Pageable pageable = com.flowcrm.shared.web.PageRequests.create(page, size, sortBy, sortDir, Lead.class);</span>
+
+        Page&lt;LeadResponse&gt; result;
+<span class="nc bnc" id="L46" title="All 4 branches missed.">        if (search != null &amp;&amp; !search.isBlank()) {</span>
+<span class="nc" id="L47">            result = leadService.search(userPrincipal.getCompanyId(), search, pageable);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        } else if (status != null) {</span>
+<span class="nc" id="L49">            result = leadService.findByStatus(userPrincipal.getCompanyId(), status, pageable);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        } else if (priority != null) {</span>
+<span class="nc" id="L51">            result = leadService.findByPriority(userPrincipal.getCompanyId(), priority, pageable);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        } else if (assignedTo != null) {</span>
+<span class="nc" id="L53">            result = leadService.findByAssignedTo(userPrincipal.getCompanyId(), assignedTo, pageable);</span>
+        } else {
+<span class="nc" id="L55">            result = leadService.findAll(userPrincipal.getCompanyId(), pageable);</span>
+        }
+
+<span class="nc" id="L58">        return ResponseEntity.ok(result);</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Buscar lead por ID&quot;)
+    public ResponseEntity&lt;LeadResponse&gt; findById(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L66">        return ResponseEntity.ok(leadService.findById(id, userPrincipal.getCompanyId()));</span>
+    }
+
+    @PostMapping
+    @Operation(summary = &quot;Criar novo lead&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES')&quot;)
+    public ResponseEntity&lt;LeadResponse&gt; create(
+            @Valid @RequestBody LeadRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L75">        return ResponseEntity.ok(leadService.create(userPrincipal.getCompanyId(), request));</span>
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Atualizar lead (inclui mudança de status para pipeline)&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES')&quot;)
+    public ResponseEntity&lt;LeadResponse&gt; update(
+            @PathVariable UUID id,
+            @Valid @RequestBody LeadUpdateRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L85">        return ResponseEntity.ok(leadService.update(id, userPrincipal.getCompanyId(), request));</span>
+    }
+
+    @PatchMapping(&quot;/{id}/status&quot;)
+    @Operation(summary = &quot;Atualizar status do lead (para drag &amp; drop do pipeline)&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES')&quot;)
+    public ResponseEntity&lt;LeadResponse&gt; updateStatus(
+            @PathVariable UUID id,
+            @RequestParam LeadStatus status,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L95">        LeadUpdateRequest request = new LeadUpdateRequest(null, null, null, null, status, null, null, null, null);</span>
+<span class="nc" id="L96">        return ResponseEntity.ok(leadService.update(id, userPrincipal.getCompanyId(), request));</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Excluir lead&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER')&quot;)
+    public ResponseEntity&lt;Void&gt; delete(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L105">        leadService.delete(id, userPrincipal.getCompanyId());</span>
+<span class="nc" id="L106">        return ResponseEntity.noContent().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

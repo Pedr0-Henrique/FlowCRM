@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.shared.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.flowcrm.shared.exception;
+
+import com.flowcrm.shared.response.ApiErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.Instant;
+
+@RestControllerAdvice
+<span class="fc" id="L19">public class GlobalExceptionHandler {</span>
+
+<span class="fc" id="L21">    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);</span>
+
+    @ExceptionHandler(InvalidParameterException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; invalidParameter(InvalidParameterException ex, HttpServletRequest request) {
+<span class="fc" id="L25">        return error(HttpStatus.BAD_REQUEST, &quot;INVALID_PARAMETER&quot;, ex.getMessage(), request);</span>
+    }
+
+    @ExceptionHandler({org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class,
+            org.springframework.web.bind.MissingServletRequestParameterException.class})
+    public ResponseEntity&lt;ApiErrorResponse&gt; invalidParameter(Exception ex, HttpServletRequest request) {
+<span class="fc" id="L31">        return error(HttpStatus.BAD_REQUEST, &quot;INVALID_PARAMETER&quot;, &quot;Parâmetro inválido ou ausente.&quot;, request);</span>
+    }
+
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; integrity(Exception ex, HttpServletRequest request) {
+<span class="nc" id="L36">        return error(HttpStatus.CONFLICT, &quot;DATA_CONFLICT&quot;, &quot;A operação conflita com dados existentes ou vinculados.&quot;, request);</span>
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; notFound(ResourceNotFoundException ex, HttpServletRequest request) {
+<span class="fc" id="L41">        return error(HttpStatus.NOT_FOUND, &quot;RESOURCE_NOT_FOUND&quot;, ex.getMessage(), request);</span>
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; business(BusinessException ex, HttpServletRequest request) {
+<span class="nc" id="L46">        return error(HttpStatus.UNPROCESSABLE_ENTITY, &quot;BUSINESS_RULE&quot;, ex.getMessage(), request);</span>
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; conflict(ConflictException ex, HttpServletRequest request) {
+<span class="fc" id="L51">        return error(HttpStatus.CONFLICT, &quot;CONFLICT&quot;, ex.getMessage(), request);</span>
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; unauthorized(UnauthorizedException ex, HttpServletRequest request) {
+<span class="fc" id="L56">        return error(HttpStatus.UNAUTHORIZED, &quot;UNAUTHORIZED&quot;, ex.getMessage(), request);</span>
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; forbidden(ForbiddenException ex, HttpServletRequest request) {
+<span class="fc" id="L61">        return error(HttpStatus.FORBIDDEN, &quot;FORBIDDEN&quot;, ex.getMessage(), request);</span>
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; accessDenied(AccessDeniedException ex, HttpServletRequest request) {
+<span class="fc" id="L66">        return error(HttpStatus.FORBIDDEN, &quot;FORBIDDEN&quot;, ex.getMessage(), request);</span>
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; validation(MethodArgumentNotValidException ex, HttpServletRequest request) {
+<span class="fc" id="L71">        String message = ex.getBindingResult().getFieldErrors().stream()</span>
+<span class="fc" id="L72">                .findFirst()</span>
+<span class="fc" id="L73">                .map(err -&gt; err.getField() + &quot;: &quot; + err.getDefaultMessage())</span>
+<span class="fc" id="L74">                .orElse(&quot;Dados inválidos.&quot;);</span>
+<span class="fc" id="L75">        return error(HttpStatus.BAD_REQUEST, &quot;VALIDATION_ERROR&quot;, message, request);</span>
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; unreadableRequest(
+            HttpMessageNotReadableException ex,
+            HttpServletRequest request) {
+<span class="fc" id="L82">        return error(</span>
+                HttpStatus.BAD_REQUEST,
+                &quot;INVALID_REQUEST_BODY&quot;,
+                &quot;Corpo da requisição inválido ou malformado.&quot;,
+                request
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ApiErrorResponse&gt; unexpected(Exception ex, HttpServletRequest request) {
+<span class="nc" id="L92">        log.error(&quot;Erro inesperado em {}&quot;, request.getRequestURI(), ex);</span>
+<span class="nc" id="L93">        return error(HttpStatus.INTERNAL_SERVER_ERROR, &quot;INTERNAL_ERROR&quot;, &quot;Erro interno. Tente novamente.&quot;, request);</span>
+    }
+
+    private ResponseEntity&lt;ApiErrorResponse&gt; error(HttpStatus status, String code, String message, HttpServletRequest request) {
+<span class="fc" id="L97">        ApiErrorResponse body = new ApiErrorResponse(</span>
+<span class="fc" id="L98">                Instant.now(),</span>
+<span class="fc" id="L99">                status.value(),</span>
+                code,
+                message,
+<span class="fc" id="L102">                request.getRequestURI(),</span>
+<span class="fc" id="L103">                MDC.get(&quot;traceId&quot;)</span>
+        );
+<span class="fc" id="L105">        return ResponseEntity.status(status).body(body);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

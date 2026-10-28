@@ -1,0 +1,626 @@
+[
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#crmEndpointsRequireAuthentication",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:crmEndpointsRequireAuthentication()]",
+    "endpoint": "GET /api/v1/leads"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesRoleCannotListUsers",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesRoleCannotListUsers()]",
+    "endpoint": "GET /api/v1/users"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#taskCanBeCreatedAndCompletedThroughTheApi",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:taskCanBeCreatedAndCompletedThroughTheApi()]",
+    "endpoint": "POST /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#taskCanBeCreatedAndCompletedThroughTheApi",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:taskCanBeCreatedAndCompletedThroughTheApi()]",
+    "endpoint": "GET /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#taskCanBeCreatedAndCompletedThroughTheApi",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:taskCanBeCreatedAndCompletedThroughTheApi()]",
+    "endpoint": "PATCH /api/v1/tasks/{id}/complete"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#taskCanBeCreatedAndCompletedThroughTheApi",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:taskCanBeCreatedAndCompletedThroughTheApi()]",
+    "endpoint": "GET /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#malformedJsonReturnsBadRequest",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:malformedJsonReturnsBadRequest()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#clientRecordsAreIsolatedBetweenCompanies",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:clientRecordsAreIsolatedBetweenCompanies()]",
+    "endpoint": "POST /api/v1/clients"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#clientRecordsAreIsolatedBetweenCompanies",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:clientRecordsAreIsolatedBetweenCompanies()]",
+    "endpoint": "POST /api/v1/opportunities"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#clientRecordsAreIsolatedBetweenCompanies",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:clientRecordsAreIsolatedBetweenCompanies()]",
+    "endpoint": "GET /api/v1/clients"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#clientRecordsAreIsolatedBetweenCompanies",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:clientRecordsAreIsolatedBetweenCompanies()]",
+    "endpoint": "GET /api/v1/clients"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#clientRecordsAreIsolatedBetweenCompanies",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:clientRecordsAreIsolatedBetweenCompanies()]",
+    "endpoint": "GET /api/v1/opportunities"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#clientRecordsAreIsolatedBetweenCompanies",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:clientRecordsAreIsolatedBetweenCompanies()]",
+    "endpoint": "GET /api/v1/opportunities"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#rejectedRateLimitedLoginIsStoredInAuditLog",
+    "status": 429,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:rejectedRateLimitedLoginIsStoredInAuditLog()]",
+    "endpoint": "POST /api/v1/auth/login"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesCanOnlyCreateAndCompleteOwnTasks",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesCanOnlyCreateAndCompleteOwnTasks()]",
+    "endpoint": "POST /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesCanOnlyCreateAndCompleteOwnTasks",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesCanOnlyCreateAndCompleteOwnTasks()]",
+    "endpoint": "POST /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesCanOnlyCreateAndCompleteOwnTasks",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesCanOnlyCreateAndCompleteOwnTasks()]",
+    "endpoint": "POST /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesCanOnlyCreateAndCompleteOwnTasks",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesCanOnlyCreateAndCompleteOwnTasks()]",
+    "endpoint": "POST /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesCanOnlyCreateAndCompleteOwnTasks",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesCanOnlyCreateAndCompleteOwnTasks()]",
+    "endpoint": "PUT /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesCanOnlyCreateAndCompleteOwnTasks",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesCanOnlyCreateAndCompleteOwnTasks()]",
+    "endpoint": "PATCH /api/v1/tasks/{id}/complete"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesCanOnlyCreateAndCompleteOwnTasks",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesCanOnlyCreateAndCompleteOwnTasks()]",
+    "endpoint": "PATCH /api/v1/tasks/{id}/complete"
+  },
+  {
+    "test": "com.flowcrm.FlowCrmApiIntegrationTests#salesCanOnlyCreateAndCompleteOwnTasks",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.FlowCrmApiIntegrationTests]/[method:salesCanOnlyCreateAndCompleteOwnTasks()]",
+    "endpoint": "PATCH /api/v1/tasks/{id}/complete"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#malformedUuidReturnsClientError",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:malformedUuidReturnsClientError()]",
+    "endpoint": "GET /api/v1/clients/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin()]",
+    "endpoint": "POST /api/v1/activities"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin()]",
+    "endpoint": "GET /api/v1/activities"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin()]",
+    "endpoint": "GET /api/v1/activities"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin()]",
+    "endpoint": "DELETE /api/v1/activities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin",
+    "status": 204,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:activitiesAreIsolatedAndCanBeDeletedByOwnerAdmin()]",
+    "endpoint": "DELETE /api/v1/activities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#tenantAdminCannotProvisionUnownedCompanies",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:tenantAdminCannotProvisionUnownedCompanies()]",
+    "endpoint": "POST /api/v1/companies"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#deletingCompanyWithUsersReturnsConflict",
+    "status": 409,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:deletingCompanyWithUsersReturnsConflict()]",
+    "endpoint": "DELETE /api/v1/companies/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#accessTokenCannotBeUsedAsRefreshToken",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:accessTokenCannotBeUsedAsRefreshToken()]",
+    "endpoint": "POST /api/v1/auth/refresh"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#refreshTokenCannotAuthenticateApiRequests",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:refreshTokenCannotAuthenticateApiRequests()]",
+    "endpoint": "GET /api/v1/auth/me"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#passwordChangeRevokesPreviouslyIssuedTokens",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:passwordChangeRevokesPreviouslyIssuedTokens()]",
+    "endpoint": "PUT /api/v1/users/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#passwordChangeRevokesPreviouslyIssuedTokens",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:passwordChangeRevokesPreviouslyIssuedTokens()]",
+    "endpoint": "GET /api/v1/auth/me"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#passwordChangeRevokesPreviouslyIssuedTokens",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:passwordChangeRevokesPreviouslyIssuedTokens()]",
+    "endpoint": "POST /api/v1/auth/refresh"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#usersListEnforcesRoleMatrix",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:usersListEnforcesRoleMatrix(java.lang.String, int)]/[test-template-invocation:#1]",
+    "endpoint": "GET /api/v1/users"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#usersListEnforcesRoleMatrix",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:usersListEnforcesRoleMatrix(java.lang.String, int)]/[test-template-invocation:#2]",
+    "endpoint": "GET /api/v1/users"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#usersListEnforcesRoleMatrix",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:usersListEnforcesRoleMatrix(java.lang.String, int)]/[test-template-invocation:#3]",
+    "endpoint": "GET /api/v1/users"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#usersListEnforcesRoleMatrix",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:usersListEnforcesRoleMatrix(java.lang.String, int)]/[test-template-invocation:#4]",
+    "endpoint": "GET /api/v1/users"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#logoutRevokesAccessAndRefreshTokens",
+    "status": 204,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:logoutRevokesAccessAndRefreshTokens()]",
+    "endpoint": "POST /api/v1/auth/logout"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#logoutRevokesAccessAndRefreshTokens",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:logoutRevokesAccessAndRefreshTokens()]",
+    "endpoint": "GET /api/v1/auth/me"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#logoutRevokesAccessAndRefreshTokens",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:logoutRevokesAccessAndRefreshTokens()]",
+    "endpoint": "POST /api/v1/auth/refresh"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "POST /api/v1/clients"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "GET /api/v1/clients/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "PUT /api/v1/clients/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "DELETE /api/v1/clients/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "PUT /api/v1/clients/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "GET /api/v1/clients/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "GET /api/v1/clients"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 204,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "DELETE /api/v1/clients/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "GET /api/v1/clients/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "POST /api/v1/leads"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "GET /api/v1/leads/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "PUT /api/v1/leads/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "DELETE /api/v1/leads/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "PUT /api/v1/leads/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "GET /api/v1/leads/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "GET /api/v1/leads"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 204,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "DELETE /api/v1/leads/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "GET /api/v1/leads/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "POST /api/v1/opportunities"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "GET /api/v1/opportunities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "PUT /api/v1/opportunities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "DELETE /api/v1/opportunities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "PUT /api/v1/opportunities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "GET /api/v1/opportunities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "GET /api/v1/opportunities"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 204,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "DELETE /api/v1/opportunities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "GET /api/v1/opportunities/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "POST /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "GET /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "PUT /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "DELETE /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "PUT /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "GET /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "GET /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 204,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "DELETE /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#mainModulesSupportCrudAndRejectOtherTenants",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:mainModulesSupportCrudAndRejectOtherTenants(java.lang.String, java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "GET /api/v1/tasks/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#invalidPaginationIsRejected",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:invalidPaginationIsRejected(java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "GET /api/v1/leads"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#invalidPaginationIsRejected",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:invalidPaginationIsRejected(java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "GET /api/v1/leads"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#invalidPaginationIsRejected",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:invalidPaginationIsRejected(java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "GET /api/v1/leads"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#invalidPaginationIsRejected",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:invalidPaginationIsRejected(java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "GET /api/v1/leads"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#disabledUserCannotContinueUsingAccessToken",
+    "status": 403,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:disabledUserCannotContinueUsingAccessToken()]",
+    "endpoint": "GET /api/v1/auth/me"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#emptyInputIsRejected",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:emptyInputIsRejected(java.lang.String)]/[test-template-invocation:#1]",
+    "endpoint": "POST /api/v1/clients"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#emptyInputIsRejected",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:emptyInputIsRejected(java.lang.String)]/[test-template-invocation:#2]",
+    "endpoint": "POST /api/v1/leads"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#emptyInputIsRejected",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:emptyInputIsRejected(java.lang.String)]/[test-template-invocation:#3]",
+    "endpoint": "POST /api/v1/opportunities"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#emptyInputIsRejected",
+    "status": 400,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[test-template:emptyInputIsRejected(java.lang.String)]/[test-template-invocation:#4]",
+    "endpoint": "POST /api/v1/tasks"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#adminCannotReadOrMutateAnotherCompany",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:adminCannotReadOrMutateAnotherCompany()]",
+    "endpoint": "GET /api/v1/companies"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#adminCannotReadOrMutateAnotherCompany",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:adminCannotReadOrMutateAnotherCompany()]",
+    "endpoint": "GET /api/v1/companies/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#adminCannotReadOrMutateAnotherCompany",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:adminCannotReadOrMutateAnotherCompany()]",
+    "endpoint": "GET /api/v1/companies/slug/{slug}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#adminCannotReadOrMutateAnotherCompany",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:adminCannotReadOrMutateAnotherCompany()]",
+    "endpoint": "PUT /api/v1/companies/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#adminCannotReadOrMutateAnotherCompany",
+    "status": 404,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:adminCannotReadOrMutateAnotherCompany()]",
+    "endpoint": "DELETE /api/v1/companies/{id}"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#refreshTokensAreSingleUse",
+    "status": 200,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:refreshTokensAreSingleUse()]",
+    "endpoint": "POST /api/v1/auth/refresh"
+  },
+  {
+    "test": "com.flowcrm.SecurityRegressionIntegrationTests#refreshTokensAreSingleUse",
+    "status": 401,
+    "invocation": "[engine:junit-jupiter]/[class:com.flowcrm.SecurityRegressionIntegrationTests]/[method:refreshTokensAreSingleUse()]",
+    "endpoint": "POST /api/v1/auth/refresh"
+  }
+]

@@ -1,0 +1,815 @@
+{
+  "generatedAt": "2026-10-28T18:26:33.721Z",
+  "vus": 10,
+  "requestedDuration": "120s",
+  "warmup": "1 VU / 10 seconds; not included in workload metrics",
+  "seed": {
+    "leads": 50,
+    "clients": 50,
+    "opportunities": 50,
+    "tasks": 50,
+    "users": 11,
+    "note": "Task count grows during warmup/load; other modules keep a fixed tenant cardinality."
+  },
+  "profile": "benchmark",
+  "databaseVersion": "PostgreSQL 17.4",
+  "loginRateLimit": "10000",
+  "requests": 6636,
+  "observedWorkloadSeconds": 120.049,
+  "requestsPerSecond": 55.277428383410104,
+  "metrics": {
+    "workload_3xx": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "workload_leads_latency": {
+      "values": {
+        "p(50)": 3.16545,
+        "p(95)": 8.808275,
+        "p(99)": 17.37685500000005,
+        "avg": 4.0101148282097725,
+        "min": 0.5284,
+        "max": 31.0042
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "workload_clients_requests": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1106,
+        "rate": 8.071995373295737
+      }
+    },
+    "workload_5xx_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "fails": 6636,
+        "rate": 0,
+        "passes": 0
+      }
+    },
+    "workload_opportunities_requests": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1106,
+        "rate": 8.071995373295737
+      }
+    },
+    "workload_login_requests": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1106,
+        "rate": 8.071995373295737
+      }
+    },
+    "workload_create_task_requests": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1106,
+        "rate": 8.071995373295737
+      }
+    },
+    "workload_get_task_requests": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1106,
+        "rate": 8.071995373295737
+      }
+    },
+    "workload_create_task_latency": {
+      "values": {
+        "min": 1.5274,
+        "max": 81.8652,
+        "p(50)": 4.233750000000001,
+        "p(95)": 10.832675,
+        "p(99)": 17.238455000000002,
+        "avg": 5.1490207052441175
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "workload_opportunities_latency": {
+      "values": {
+        "p(50)": 3.0847499999999997,
+        "p(95)": 8.6617,
+        "p(99)": 20.044000000000047,
+        "avg": 3.9896414104882383,
+        "min": 0.5351,
+        "max": 35.3323
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "workload_unexpected": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "fails": 6636,
+        "rate": 0,
+        "passes": 0
+      },
+      "thresholds": {
+        "rate==0": {
+          "ok": true
+        }
+      }
+    },
+    "workload_latency_2xx": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(50)": 3.60805,
+        "p(95)": 66.1489,
+        "p(99)": 80.8915,
+        "avg": 14.575466003616617,
+        "min": 0.5054,
+        "max": 194.7326
+      }
+    },
+    "workload_clients_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 8.505524999999999,
+        "p(99)": 18.063370000000063,
+        "avg": 3.8396938517179047,
+        "min": 0.5203,
+        "max": 34.2093,
+        "p(50)": 3.0053
+      }
+    },
+    "workload_get_task_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 3.4034265822784806,
+        "min": 0.5054,
+        "max": 25.4121,
+        "p(50)": 2.5732999999999997,
+        "p(95)": 7.6384,
+        "p(99)": 14.47177500000004
+      }
+    },
+    "workload_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 194.7326,
+        "p(50)": 3.60805,
+        "p(95)": 66.1489,
+        "p(99)": 80.8915,
+        "avg": 14.575466003616617,
+        "min": 0.5054
+      }
+    },
+    "workload_login_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 67.06089864376128,
+        "min": 57.6109,
+        "max": 194.7326,
+        "p(50)": 64.02435,
+        "p(95)": 83.62485000000001,
+        "p(99)": 122.78057000000001
+      }
+    },
+    "workload_network_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "workload_5xx": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "workload_timestamps": {
+      "values": {
+        "p(99)": 1793211991626,
+        "avg": 1793211932962.2793,
+        "min": 1793211872668,
+        "max": 1793211992717,
+        "p(50)": 1793211933198,
+        "p(95)": 1793211986924
+      },
+      "type": "trend",
+      "contains": "default"
+    },
+    "workload_4xx": {
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "workload_2xx": {
+      "contains": "default",
+      "values": {
+        "count": 6636,
+        "rate": 48.43197223977442
+      },
+      "type": "counter"
+    },
+    "workload_timeouts": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "workload_requests": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 6636,
+        "rate": 48.43197223977442
+      }
+    },
+    "workload_leads_requests": {
+      "values": {
+        "count": 1106,
+        "rate": 8.071995373295737
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "workload_429": {
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "count": 0
+      },
+      "type": "counter"
+    }
+  },
+  "rawSummary": {
+    "setup_data": {
+      "users": [
+        {
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwZWJiZDQyNC01OTE0LTQyOGMtODZkOC1jNzc5ODg2M2NjNzIiLCJqdGkiOiIwMjkxMDIyNS05MGQyLTQ3NzMtYWZjNy03MWI3ZDZjMGZmMmEiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctMEBleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1NywiZXhwIjoxNzkzMjE1NDU3fQ.AwQJzzkP8hx-e8pmi9Yc8G4LbtSdjV1ekqFkIhVfmV2m8CMh1KVNv_bSK1pVGcdQ3PsgqSUtYAnliIiU3IL0Ew",
+          "email": "bench-1793211856702-938767-0@example.com",
+          "password": "benchmark-password-123"
+        },
+        {
+          "email": "bench-1793211856702-938767-1@example.com",
+          "password": "benchmark-password-123",
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYzA2NjJhOC1iYzAzLTRkNDAtYmFjMS1mZWFhNGRjMzUxNzUiLCJqdGkiOiI1OTkyNDBiZC0xODVjLTQ1NjUtYTg0NC1jZTJjNGRmOGRiYjciLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctMUBleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1NywiZXhwIjoxNzkzMjE1NDU3fQ.SaCc3jGs5D4psuh8BW_dS7Ui7JAehtk2krpu0UHPYew0WoxZL-R9HmdglQ3cn8ob4ot_kzhBmz1DrXBDxtu4Qg"
+        },
+        {
+          "email": "bench-1793211856702-938767-2@example.com",
+          "password": "benchmark-password-123",
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1YzAxYjNkNy02MzY2LTRhMTUtOTA3OC1iYjg4YTczYjFiMDQiLCJqdGkiOiI5Zjg4NjBjMy0wYThjLTQ3MWEtYTk3NC05ODFlNTliZDllZDMiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctMkBleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1NywiZXhwIjoxNzkzMjE1NDU3fQ.YFlOI6UNTcIaoJDvhYxMDdYzkuGqlhYJ0Xub_Y9GcYffUsejjLdBMb9tWnnTNFmIxaH7l_Ac3f-IrTgHkjCxdg"
+        },
+        {
+          "email": "bench-1793211856702-938767-3@example.com",
+          "password": "benchmark-password-123",
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlNzllMjk4Yy03NjI3LTQ2MTUtYWFmNy1lMWY5NzQ2MzExYWQiLCJqdGkiOiJjOGRhMTUxMy00ZDcyLTRkZjgtOGQwNy04ZDUzZDFlNjVmZWEiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctM0BleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1NywiZXhwIjoxNzkzMjE1NDU3fQ.l7QW_qN6zPfPcdUTjtjhMoZUqogPVeOCt5bOWr3HAegXYmLGWSbiylu7D_B4g7-oUMibYL7jWVYlSPPiVYYq1A"
+        },
+        {
+          "email": "bench-1793211856702-938767-4@example.com",
+          "password": "benchmark-password-123",
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzZjY3ZTVjMS05NzBiLTQyYzgtODNlOS0zNTE4NDI0NGE3NTUiLCJqdGkiOiJjOWM0NTQzNy02YTFlLTQ1NjQtODhkZC1iZjY0NDY5OGEzMzYiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctNEBleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1OCwiZXhwIjoxNzkzMjE1NDU4fQ.wolKOLmJh5c74y0qNiVANouTtWsY-1rGtJflat8jCaVQTmcjqI_CwSnuJ9gwxt0ES4_6uP0KKnObXfBTGOkZ8Q"
+        },
+        {
+          "email": "bench-1793211856702-938767-5@example.com",
+          "password": "benchmark-password-123",
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0M2I0MzBiOC0yMmJmLTQzZjYtYTJiZS1iMzExNGI0ZGJlZmMiLCJqdGkiOiJmZWUwNzQyZS04NTE0LTRlYjYtYjY0YS1jMWRkZDU2OGRiNzkiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctNUBleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1OCwiZXhwIjoxNzkzMjE1NDU4fQ.yCMa5A6eXXypmAHKN0csEBy11XFqjx4OsEa8DzdLWj4PCg4HG7pYnC2dT7yV-5dp7pooSz7l9iq4FJbFtnVJ5A"
+        },
+        {
+          "email": "bench-1793211856702-938767-6@example.com",
+          "password": "benchmark-password-123",
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwZjYzOGMxNy03MzgwLTQ4Y2ItOWUyOS05ZTEyYzc5MzFhYTciLCJqdGkiOiI4YWRkZTI2Ny1jYTM2LTRjMzItOGYyNy01ZDkxZmQ1Yzc5MDQiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctNkBleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1OCwiZXhwIjoxNzkzMjE1NDU4fQ.pSfZtctPT6ckDidedUtFnV40CrgoGnEvhP64uc6pf_YfGC0oZ_DcvUEsltygBAdbib3kCF5H38mxb3Wu7sRsRA"
+        },
+        {
+          "email": "bench-1793211856702-938767-7@example.com",
+          "password": "benchmark-password-123",
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MzlhMjQ4ZS04ODgxLTRlMjktYjZlMi05YTEwZTUwMGIyN2QiLCJqdGkiOiI0ZDU4NDVmNS05MzU5LTRmOGYtODIxNC1kNmZiNzFhNWIyNzQiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctN0BleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1OCwiZXhwIjoxNzkzMjE1NDU4fQ.8Ql3WfXOfUJ2wv4MNE4E6Mb1iDJYjHAdG5yacYHaTzVGVWh4vqKSrOjvjAuhdgLGBXaXehIBAkO437cdk5iFQg"
+        },
+        {
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjNTI1ZGY0NC1lNDc5LTRkYjktOWFlZi1mZmI0OTI5MjM1NTQiLCJqdGkiOiJjMDAzNTM5MC1iOWJmLTRlZjItYTU3MC1kYWNlNjNkN2U0YTYiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctOEBleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1OCwiZXhwIjoxNzkzMjE1NDU4fQ.M6kZgmJvy1HBJUf0XFn9rGnHneXwDBd-xvqIi5slPGrWQfEmpMx4sQYGw8TUgTYN4I7Ydv4yfvJzvutMOqwfXQ",
+          "email": "bench-1793211856702-938767-8@example.com",
+          "password": "benchmark-password-123"
+        },
+        {
+          "email": "bench-1793211856702-938767-9@example.com",
+          "password": "benchmark-password-123",
+          "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiMjY2NGFkMC1kMzU5LTQ5MDAtYjgyYS02YTBlZTkyYWM1NmIiLCJqdGkiOiJmZTI5MDA4NS1jN2JhLTQ4YTItODZkZC1iNmNmOTc2ZWM4MTYiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJ0b2tlblZlcnNpb24iOjAsImNvbXBhbnlJZCI6IjA3NTRiYmUyLWIyYTEtNDAzMi04Nzk0LTNiYzU3MWQyNmYwOCIsInJvbGUiOiJTQUxFUyIsImVtYWlsIjoiYmVuY2gtMTc5MzIxMTg1NjcwMi05Mzg3NjctOUBleGFtcGxlLmNvbSIsImlhdCI6MTc5MzIxMTg1OCwiZXhwIjoxNzkzMjE1NDU4fQ.WlG66hRG0T1ap-l5UwZnXJxIRYTrhyaYmFgM4Gvzkd2d0ZEfI8UeM6UtfHjxZ2-UH_cWzC70bWhfwn4wFK0H7A"
+        }
+      ]
+    },
+    "root_group": {
+      "groups": [],
+      "checks": [
+          {
+            "name": "login: expected status and payload",
+            "path": "::login: expected status and payload",
+            "id": "ffd0458355c71c8f8b8859c68b29d495",
+            "passes": 1115,
+            "fails": 0
+          },
+          {
+            "name": "leads: expected status and payload",
+            "path": "::leads: expected status and payload",
+            "id": "cbe9109cc2b9f64a6dc4b6273947bfd2",
+            "passes": 1115,
+            "fails": 0
+          },
+          {
+            "path": "::clients: expected status and payload",
+            "id": "9ecc2b54052e02d5939dff2672c04ee1",
+            "passes": 1115,
+            "fails": 0,
+            "name": "clients: expected status and payload"
+          },
+          {
+            "path": "::opportunities: expected status and payload",
+            "id": "caf1ff71b010e49e64960e4a24590486",
+            "passes": 1115,
+            "fails": 0,
+            "name": "opportunities: expected status and payload"
+          },
+          {
+            "id": "1ae83123831cd639d4a3e527e01fd954",
+            "passes": 1115,
+            "fails": 0,
+            "name": "create_task: expected status and payload",
+            "path": "::create_task: expected status and payload"
+          },
+          {
+            "passes": 1115,
+            "fails": 0,
+            "name": "get_task: expected status and payload",
+            "path": "::get_task: expected status and payload",
+            "id": "f132b6da6ee0f3d99025ae86b59580f6"
+          }
+        ],
+      "name": "",
+      "path": "",
+      "id": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "options": {
+      "summaryTrendStats": [
+        "avg",
+        "min",
+        "max",
+        "p(50)",
+        "p(95)",
+        "p(99)"
+      ],
+      "summaryTimeUnit": "",
+      "noColor": true
+    },
+    "state": {
+      "isStdOutTTY": false,
+      "isStdErrTTY": false,
+      "testRunDurationMs": 137016.9269
+    },
+    "metrics": {
+      "iteration_duration": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "min": 1070.8789,
+          "max": 1251.3828,
+          "p(50)": 1083.0314,
+          "p(95)": 1132.88836,
+          "p(99)": 1204.4798959999998,
+          "avg": 1090.7228555156955
+        }
+      },
+      "workload_unexpected": {
+        "contains": "default",
+        "values": {
+          "passes": 0,
+          "fails": 6636,
+          "rate": 0
+        },
+        "thresholds": {
+          "rate==0": {
+            "ok": true
+          }
+        },
+        "type": "rate"
+      },
+      "workload_latency_2xx": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "avg": 14.575466003616617,
+          "min": 0.5054,
+          "max": 194.7326,
+          "p(50)": 3.60805,
+          "p(95)": 66.1489,
+          "p(99)": 80.8915
+        }
+      },
+      "workload_clients_latency": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "p(50)": 3.0053,
+          "p(95)": 8.505524999999999,
+          "p(99)": 18.063370000000063,
+          "avg": 3.8396938517179047,
+          "min": 0.5203,
+          "max": 34.2093
+        }
+      },
+      "workload_get_task_latency": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "avg": 3.4034265822784806,
+          "min": 0.5054,
+          "max": 25.4121,
+          "p(50)": 2.5732999999999997,
+          "p(95)": 7.6384,
+          "p(99)": 14.47177500000004
+        }
+      },
+      "vus": {
+        "contains": "default",
+        "values": {
+          "min": 0,
+          "max": 10,
+          "value": 2
+        },
+        "type": "gauge"
+      },
+      "http_req_receiving": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "avg": 0.6635297352047482,
+          "min": 0,
+          "max": 43.7333,
+          "p(50)": 0.5808,
+          "p(95)": 1.5223,
+          "p(99)": 2.9282799999999956
+        }
+      },
+      "iterations": {
+        "contains": "default",
+        "values": {
+          "count": 1115,
+          "rate": 8.137680688268306
+        },
+        "type": "counter"
+      },
+      "workload_latency": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "p(50)": 3.60805,
+          "p(95)": 66.1489,
+          "p(99)": 80.8915,
+          "avg": 14.575466003616617,
+          "min": 0.5054,
+          "max": 194.7326
+        }
+      },
+      "workload_login_latency": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "max": 194.7326,
+          "p(50)": 64.02435,
+          "p(95)": 83.62485000000001,
+          "p(99)": 122.78057000000001,
+          "avg": 67.06089864376128,
+          "min": 57.6109
+        }
+      },
+      "workload_network_errors": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 0,
+          "rate": 0
+        }
+      },
+      "workload_5xx": {
+        "values": {
+          "count": 0,
+          "rate": 0
+        },
+        "type": "counter",
+        "contains": "default"
+      },
+      "workload_timestamps": {
+        "type": "trend",
+        "contains": "default",
+        "values": {
+          "min": 1793211872668,
+          "max": 1793211992717,
+          "p(50)": 1793211933198,
+          "p(95)": 1793211986924,
+          "p(99)": 1793211991626,
+          "avg": 1793211932962.2793
+        }
+      },
+      "workload_4xx": {
+        "contains": "default",
+        "values": {
+          "count": 0,
+          "rate": 0
+        },
+        "type": "counter"
+      },
+      "workload_2xx": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 6636,
+          "rate": 48.43197223977442
+        }
+      },
+      "http_req_sending": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "min": 0,
+          "max": 3.1574,
+          "p(50)": 0,
+          "p(95)": 0,
+          "p(99)": 0.6024299999999998,
+          "avg": 0.021739531182173342
+        }
+      },
+      "workload_timeouts": {
+        "values": {
+          "count": 0,
+          "rate": 0
+        },
+        "type": "counter",
+        "contains": "default"
+      },
+      "http_req_connecting": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "min": 0,
+          "max": 29.184,
+          "p(50)": 0,
+          "p(95)": 0,
+          "p(99)": 0,
+          "avg": 0.009774866155404427
+        }
+      },
+      "checks": {
+        "contains": "default",
+        "values": {
+          "fails": 0,
+          "rate": 1,
+          "passes": 6690
+        },
+        "type": "rate"
+      },
+      "workload_requests": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "rate": 48.43197223977442,
+          "count": 6636
+        }
+      },
+      "workload_leads_requests": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 1106,
+          "rate": 8.071995373295737
+        }
+      },
+      "http_req_failed": {
+        "type": "rate",
+        "contains": "default",
+        "values": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 6911
+        }
+      },
+      "workload_429": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 0,
+          "rate": 0
+        }
+      },
+      "http_reqs": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 6911,
+          "rate": 50.439023530602924
+        }
+      },
+      "http_req_tls_handshaking": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "avg": 0,
+          "min": 0,
+          "max": 0,
+          "p(50)": 0,
+          "p(95)": 0,
+          "p(99)": 0
+        }
+      },
+      "http_req_blocked": {
+        "values": {
+          "avg": 0.015816640138908985,
+          "min": 0,
+          "max": 29.184,
+          "p(50)": 0,
+          "p(95)": 0,
+          "p(99)": 0.5163299999999994
+        },
+        "type": "trend",
+        "contains": "time"
+      },
+      "workload_3xx": {
+        "contains": "default",
+        "values": {
+          "count": 0,
+          "rate": 0
+        },
+        "type": "counter"
+      },
+      "workload_leads_latency": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "max": 31.0042,
+          "p(50)": 3.16545,
+          "p(95)": 8.808275,
+          "p(99)": 17.37685500000005,
+          "avg": 4.0101148282097725,
+          "min": 0.5284
+        }
+      },
+      "workload_clients_requests": {
+        "values": {
+          "count": 1106,
+          "rate": 8.071995373295737
+        },
+        "type": "counter",
+        "contains": "default"
+      },
+      "vus_max": {
+        "type": "gauge",
+        "contains": "default",
+        "values": {
+          "max": 10,
+          "value": 10,
+          "min": 10
+        }
+      },
+      "data_sent": {
+        "type": "counter",
+        "contains": "data",
+        "values": {
+          "count": 4007966,
+          "rate": 29251.61212326096
+        }
+      },
+      "workload_5xx_rate": {
+        "type": "rate",
+        "contains": "default",
+        "values": {
+          "rate": 0,
+          "passes": 0,
+          "fails": 6636
+        }
+      },
+      "workload_opportunities_requests": {
+        "values": {
+          "count": 1106,
+          "rate": 8.071995373295737
+        },
+        "type": "counter",
+        "contains": "default"
+      },
+      "workload_login_requests": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "rate": 8.071995373295737,
+          "count": 1106
+        }
+      },
+      "http_req_waiting": {
+        "contains": "time",
+        "values": {
+          "p(50)": 3.254,
+          "p(95)": 65.1702,
+          "p(99)": 78.94690999999993,
+          "avg": 14.045682694255513,
+          "min": 0.5054,
+          "max": 502.1848
+        },
+        "type": "trend"
+      },
+      "data_received": {
+        "type": "counter",
+        "contains": "data",
+        "values": {
+          "count": 31860813,
+          "rate": 232531.9485763478
+        }
+      },
+      "http_req_duration": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "p(50)": 3.7276,
+          "p(95)": 66.2243,
+          "p(99)": 81.3547299999998,
+          "avg": 14.73095196064243,
+          "min": 0.5054,
+          "max": 511.3725
+        }
+      },
+      "workload_create_task_requests": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 1106,
+          "rate": 8.071995373295737
+        }
+      },
+      "workload_get_task_requests": {
+        "type": "counter",
+        "contains": "default",
+        "values": {
+          "count": 1106,
+          "rate": 8.071995373295737
+        }
+      },
+      "workload_create_task_latency": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "p(50)": 4.233750000000001,
+          "p(95)": 10.832675,
+          "p(99)": 17.238455000000002,
+          "avg": 5.1490207052441175,
+          "min": 1.5274,
+          "max": 81.8652
+        }
+      },
+      "http_req_duration{expected_response:true}": {
+        "contains": "time",
+        "values": {
+          "p(99)": 81.3547299999998,
+          "avg": 14.73095196064243,
+          "min": 0.5054,
+          "max": 511.3725,
+          "p(50)": 3.7276,
+          "p(95)": 66.2243
+        },
+        "type": "trend"
+      },
+      "workload_opportunities_latency": {
+        "type": "trend",
+        "contains": "time",
+        "values": {
+          "p(95)": 8.6617,
+          "p(99)": 20.044000000000047,
+          "avg": 3.9896414104882383,
+          "min": 0.5351,
+          "max": 35.3323,
+          "p(50)": 3.0847499999999997
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Local closed-loop workload, no production SLA.",
+    "Raw built-in HTTP metrics include setup/warmup; use workload_* metrics for reported load.",
+    "HTTP 429 is included in 4xx and separately counted; timeouts are a subset of network errors.",
+    "Latency is k6 HTTP sending+waiting+receiving; connection/TLS timing is retained in rawSummary."
+  ]
+}

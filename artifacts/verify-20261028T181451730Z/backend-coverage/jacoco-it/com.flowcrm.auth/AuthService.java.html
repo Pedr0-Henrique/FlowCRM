@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.auth</a> &gt; <span class="el_source">AuthService.java</span></div><h1>AuthService.java</h1><pre class="source lang-java linenums">package com.flowcrm.auth;
+
+import com.flowcrm.auth.dto.*;
+import com.flowcrm.company.Company;
+import com.flowcrm.company.CompanyRepository;
+import com.flowcrm.shared.exception.ConflictException;
+import com.flowcrm.shared.exception.ResourceNotFoundException;
+import com.flowcrm.shared.exception.UnauthorizedException;
+import com.flowcrm.shared.security.JwtService;
+import com.flowcrm.user.Role;
+import com.flowcrm.user.User;
+import com.flowcrm.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+
+    private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final org.springframework.jdbc.core.JdbcTemplate jdbc;
+
+    @Transactional
+    public AuthResponse register(RegisterRequest request) {
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (userRepository.existsByEmail(request.email())) {</span>
+<span class="nc" id="L33">            throw new ConflictException(&quot;E-mail já cadastrado&quot;);</span>
+        }
+
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (companyRepository.existsBySlug(request.companySlug())) {</span>
+<span class="nc" id="L37">            throw new ConflictException(&quot;Slug da empresa já está em uso&quot;);</span>
+        }
+
+<span class="fc" id="L40">        Company company = new Company(request.companyName(), request.companySlug());</span>
+<span class="fc" id="L41">        company = companyRepository.save(company);</span>
+
+<span class="fc" id="L43">        String passwordHash = passwordEncoder.encode(request.password());</span>
+<span class="fc" id="L44">        User user = new User(company, request.name(), request.email(), passwordHash, Role.ADMIN);</span>
+<span class="fc" id="L45">        user = userRepository.save(user);</span>
+
+<span class="fc" id="L47">        String accessToken = jwtService.generateAccessToken(</span>
+<span class="fc" id="L48">                user.getId(),</span>
+<span class="fc" id="L49">                company.getId(),</span>
+<span class="fc" id="L50">                user.getEmail(),</span>
+<span class="fc" id="L51">                user.getRole().name(), user.getTokenVersion()</span>
+        );
+
+<span class="fc" id="L54">        String refreshToken = jwtService.generateRefreshToken(user.getId(), user.getTokenVersion());</span>
+
+<span class="fc" id="L56">        return new AuthResponse(</span>
+                accessToken,
+                refreshToken,
+<span class="fc" id="L59">                user.getId(),</span>
+<span class="fc" id="L60">                user.getName(),</span>
+<span class="fc" id="L61">                user.getEmail(),</span>
+<span class="fc" id="L62">                user.getRole(),</span>
+<span class="fc" id="L63">                company.getId(),</span>
+<span class="fc" id="L64">                company.getName()</span>
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public AuthResponse login(LoginRequest request) {
+<span class="fc" id="L70">        User user = userRepository.findByEmail(request.email())</span>
+<span class="fc" id="L71">                .orElseThrow(() -&gt; new UnauthorizedException(&quot;Credenciais inválidas&quot;));</span>
+
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {</span>
+<span class="nc" id="L74">            throw new UnauthorizedException(&quot;Credenciais inválidas&quot;);</span>
+        }
+
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (!user.getActive()) {</span>
+<span class="nc" id="L78">            throw new UnauthorizedException(&quot;Usuário desativado&quot;);</span>
+        }
+
+<span class="fc" id="L81">        Company company = user.getCompany();</span>
+
+<span class="fc" id="L83">        String accessToken = jwtService.generateAccessToken(</span>
+<span class="fc" id="L84">                user.getId(),</span>
+<span class="fc" id="L85">                company.getId(),</span>
+<span class="fc" id="L86">                user.getEmail(),</span>
+<span class="fc" id="L87">                user.getRole().name(), user.getTokenVersion()</span>
+        );
+
+<span class="fc" id="L90">        String refreshToken = jwtService.generateRefreshToken(user.getId(), user.getTokenVersion());</span>
+
+<span class="fc" id="L92">        return new AuthResponse(</span>
+                accessToken,
+                refreshToken,
+<span class="fc" id="L95">                user.getId(),</span>
+<span class="fc" id="L96">                user.getName(),</span>
+<span class="fc" id="L97">                user.getEmail(),</span>
+<span class="fc" id="L98">                user.getRole(),</span>
+<span class="fc" id="L99">                company.getId(),</span>
+<span class="fc" id="L100">                company.getName()</span>
+        );
+    }
+
+    @Transactional
+    public AuthResponse refresh(RefreshRequest request) {
+<span class="fc" id="L106">        String refreshToken = request.refreshToken();</span>
+        io.jsonwebtoken.Claims claims;
+        try {
+<span class="fc" id="L109">            claims = jwtService.requireToken(refreshToken, &quot;refresh&quot;);</span>
+<span class="fc" id="L110">        } catch (io.jsonwebtoken.JwtException | IllegalArgumentException | NullPointerException exception) {</span>
+<span class="fc" id="L111">            throw new UnauthorizedException(&quot;Refresh token inválido ou expirado&quot;);</span>
+<span class="fc" id="L112">        }</span>
+
+<span class="fc" id="L114">        UUID userId = jwtService.extractUserId(refreshToken);</span>
+
+<span class="fc" id="L116">        User user = userRepository.findForTokenUpdate(userId)</span>
+<span class="pc" id="L117">                .orElseThrow(() -&gt; new UnauthorizedException(&quot;Refresh token inválido ou expirado&quot;));</span>
+
+<span class="pc bpc" id="L119" title="1 of 4 branches missed.">        if (!user.getActive() || user.getTokenVersion() != claims.get(&quot;tokenVersion&quot;, Long.class)) {</span>
+<span class="fc" id="L120">            throw new UnauthorizedException(&quot;Usuário desativado&quot;);</span>
+        }
+
+<span class="fc" id="L123">        int consumed = jdbc.update(&quot;&quot;&quot;</span>
+                INSERT INTO consumed_refresh_tokens (token_id, user_id, expires_at)
+                VALUES (?, ?, ?) ON CONFLICT (token_id) DO NOTHING
+<span class="fc" id="L126">                &quot;&quot;&quot;, UUID.fromString(claims.getId()), userId,</span>
+<span class="fc" id="L127">                java.sql.Timestamp.from(claims.getExpiration().toInstant()));</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (consumed != 1) throw new UnauthorizedException(&quot;Refresh token já utilizado&quot;);</span>
+
+<span class="fc" id="L130">        Company company = user.getCompany();</span>
+
+<span class="fc" id="L132">        String accessToken = jwtService.generateAccessToken(</span>
+<span class="fc" id="L133">                user.getId(),</span>
+<span class="fc" id="L134">                company.getId(),</span>
+<span class="fc" id="L135">                user.getEmail(),</span>
+<span class="fc" id="L136">                user.getRole().name(), user.getTokenVersion()</span>
+        );
+
+<span class="fc" id="L139">        String newRefreshToken = jwtService.generateRefreshToken(user.getId(), user.getTokenVersion());</span>
+
+<span class="fc" id="L141">        return new AuthResponse(</span>
+                accessToken,
+                newRefreshToken,
+<span class="fc" id="L144">                user.getId(),</span>
+<span class="fc" id="L145">                user.getName(),</span>
+<span class="fc" id="L146">                user.getEmail(),</span>
+<span class="fc" id="L147">                user.getRole(),</span>
+<span class="fc" id="L148">                company.getId(),</span>
+<span class="fc" id="L149">                company.getName()</span>
+        );
+    }
+
+    @Transactional
+    public void logout(UUID userId) {
+<span class="fc" id="L155">        User user = userRepository.findForTokenUpdate(userId)</span>
+<span class="pc" id="L156">                .orElseThrow(() -&gt; new UnauthorizedException(&quot;Usuário não encontrado&quot;));</span>
+<span class="fc" id="L157">        user.setTokenVersion(user.getTokenVersion() + 1);</span>
+<span class="fc" id="L158">        userRepository.saveAndFlush(user);</span>
+<span class="fc" id="L159">    }</span>
+
+    @Transactional(readOnly = true)
+    public UserResponse getMe(UUID userId, UUID companyId) {
+<span class="fc" id="L163">        User user = userRepository.findByIdAndCompanyId(userId, companyId)</span>
+<span class="pc" id="L164">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Usuário não encontrado&quot;));</span>
+
+<span class="fc" id="L166">        return new UserResponse(</span>
+<span class="fc" id="L167">                user.getId(),</span>
+<span class="fc" id="L168">                user.getName(),</span>
+<span class="fc" id="L169">                user.getEmail(),</span>
+<span class="fc" id="L170">                user.getRole(),</span>
+<span class="fc" id="L171">                user.getActive(),</span>
+<span class="fc" id="L172">                user.getCompany().getId(),</span>
+<span class="fc" id="L173">                user.getCompany().getName(),</span>
+<span class="fc" id="L174">                user.getCreatedAt()</span>
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

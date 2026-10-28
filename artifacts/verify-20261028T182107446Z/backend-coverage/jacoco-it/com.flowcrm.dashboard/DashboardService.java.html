@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DashboardService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.dashboard</a> &gt; <span class="el_source">DashboardService.java</span></div><h1>DashboardService.java</h1><pre class="source lang-java linenums">package com.flowcrm.dashboard;
+
+import com.flowcrm.client.ClientRepository;
+import com.flowcrm.dashboard.dto.*;
+import com.flowcrm.lead.Lead;
+import com.flowcrm.lead.LeadRepository;
+import com.flowcrm.lead.LeadStatus;
+import com.flowcrm.opportunity.Opportunity;
+import com.flowcrm.opportunity.OpportunityRepository;
+import com.flowcrm.opportunity.OpportunityStage;
+import com.flowcrm.task.Task;
+import com.flowcrm.task.TaskRepository;
+import com.flowcrm.task.TaskStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class DashboardService {
+
+    private final LeadRepository leadRepository;
+    private final ClientRepository clientRepository;
+    private final OpportunityRepository opportunityRepository;
+    private final TaskRepository taskRepository;
+
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public DashboardResponse getDashboard(UUID companyId) {
+<span class="nc" id="L37">        var pageable = org.springframework.data.domain.Pageable.unpaged();</span>
+<span class="nc" id="L38">        var leads = leadRepository.findByCompanyId(companyId, pageable).getContent();</span>
+<span class="nc" id="L39">        var opportunities = opportunityRepository.findByCompanyId(companyId, pageable).getContent();</span>
+<span class="nc" id="L40">        var tasks = taskRepository.findByCompanyId(companyId, pageable).getContent();</span>
+<span class="nc" id="L41">        DashboardKPIs kpis = calculateKPIs(companyId, leads, opportunities, tasks);</span>
+<span class="nc" id="L42">        List&lt;ChartSeries&gt; leadsByStatus = getLeadsByStatus(leads);</span>
+<span class="nc" id="L43">        List&lt;ChartSeries&gt; leadsBySource = getLeadsBySource(leads);</span>
+<span class="nc" id="L44">        List&lt;ChartSeries&gt; opportunitiesByStage = getOpportunitiesByStage(opportunities);</span>
+<span class="nc" id="L45">        List&lt;ChartSeries&gt; tasksByStatus = getTasksByStatus(tasks);</span>
+<span class="nc" id="L46">        List&lt;ChartSeries&gt; monthlyRevenue = getMonthlyRevenue(opportunities);</span>
+
+<span class="nc" id="L48">        return new DashboardResponse(</span>
+                kpis,
+                leadsByStatus,
+                leadsBySource,
+                opportunitiesByStage,
+                tasksByStatus,
+                monthlyRevenue
+        );
+    }
+
+    private DashboardKPIs calculateKPIs(UUID companyId, List&lt;Lead&gt; allLeads, List&lt;Opportunity&gt; opportunities, List&lt;Task&gt; allTasks) {
+<span class="nc" id="L59">        long totalLeads = allLeads.size();</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        long leadsWon = allLeads.stream().filter(l -&gt; l.getStatus() == LeadStatus.WON).count();</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        long leadsLost = allLeads.stream().filter(l -&gt; l.getStatus() == LeadStatus.LOST).count();</span>
+
+<span class="nc" id="L63">        long totalClients = clientRepository.countByCompanyId(companyId);</span>
+<span class="nc" id="L64">        long totalOpportunities = opportunities.size();</span>
+
+<span class="nc" id="L66">        BigDecimal totalOpportunityValue = opportunities.stream()</span>
+<span class="nc" id="L67">                .map(Opportunity::getValue)</span>
+<span class="nc" id="L68">                .reduce(BigDecimal.ZERO, BigDecimal::add);</span>
+
+<span class="nc" id="L70">        BigDecimal weightedOpportunityValue = opportunities.stream()</span>
+<span class="nc" id="L71">                .map(o -&gt; o.getValue().multiply(BigDecimal.valueOf(o.getProbability()).divide(BigDecimal.valueOf(100))))</span>
+<span class="nc" id="L72">                .reduce(BigDecimal.ZERO, BigDecimal::add);</span>
+
+<span class="nc" id="L74">        long totalTasks = allTasks.size();</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">        long openTasks = allTasks.stream().filter(t -&gt; t.getStatus() != TaskStatus.COMPLETED &amp;&amp; t.getStatus() != TaskStatus.CANCELLED).count();</span>
+<span class="nc" id="L76">        Instant now = Instant.now();</span>
+<span class="nc" id="L77">        long overdueTasks = allTasks.stream()</span>
+<span class="nc bnc" id="L78" title="All 4 branches missed.">                .filter(t -&gt; t.getStatus() != TaskStatus.COMPLETED &amp;&amp; t.getStatus() != TaskStatus.CANCELLED)</span>
+<span class="nc bnc" id="L79" title="All 4 branches missed.">                .filter(t -&gt; t.getDueDate() != null &amp;&amp; t.getDueDate().isBefore(now))</span>
+<span class="nc" id="L80">                .count();</span>
+
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        double conversionRate = totalLeads &gt; 0 ? (double) leadsWon / totalLeads * 100 : 0.0;</span>
+
+<span class="nc" id="L84">        return new DashboardKPIs(</span>
+                totalLeads,
+                totalClients,
+                totalOpportunities,
+                totalTasks,
+                leadsWon,
+                leadsLost,
+                totalOpportunityValue,
+                weightedOpportunityValue,
+                openTasks,
+                overdueTasks,
+                conversionRate
+        );
+    }
+
+    private List&lt;ChartSeries&gt; getLeadsByStatus(List&lt;Lead&gt; leads) {
+<span class="nc" id="L100">        Map&lt;LeadStatus, Long&gt; statusCount = leads.stream()</span>
+<span class="nc" id="L101">                .collect(Collectors.groupingBy(Lead::getStatus, Collectors.counting()));</span>
+
+<span class="nc" id="L103">        List&lt;ChartDataPoint&gt; data = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        for (LeadStatus status : LeadStatus.values()) {</span>
+<span class="nc" id="L105">            data.add(new ChartDataPoint(status.name(), statusCount.getOrDefault(status, 0L)));</span>
+        }
+
+<span class="nc" id="L108">        return List.of(new ChartSeries(&quot;Leads por Status&quot;, data));</span>
+    }
+
+    private List&lt;ChartSeries&gt; getLeadsBySource(List&lt;Lead&gt; leads) {
+<span class="nc" id="L112">        Map&lt;String, Long&gt; sourceCount = leads.stream()</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                .filter(l -&gt; l.getSource() != null)</span>
+<span class="nc" id="L114">                .collect(Collectors.groupingBy(Lead::getSource, Collectors.counting()));</span>
+
+<span class="nc" id="L116">        List&lt;ChartDataPoint&gt; data = sourceCount.entrySet().stream()</span>
+<span class="nc" id="L117">                .map(entry -&gt; new ChartDataPoint(entry.getKey(), entry.getValue()))</span>
+<span class="nc" id="L118">                .toList();</span>
+
+<span class="nc" id="L120">        return List.of(new ChartSeries(&quot;Leads por Origem&quot;, data));</span>
+    }
+
+    private List&lt;ChartSeries&gt; getOpportunitiesByStage(List&lt;Opportunity&gt; opportunities) {
+<span class="nc" id="L124">        Map&lt;OpportunityStage, Long&gt; stageCount = opportunities.stream()</span>
+<span class="nc" id="L125">                .collect(Collectors.groupingBy(Opportunity::getStage, Collectors.counting()));</span>
+
+<span class="nc" id="L127">        List&lt;ChartDataPoint&gt; data = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (OpportunityStage stage : OpportunityStage.values()) {</span>
+<span class="nc" id="L129">            data.add(new ChartDataPoint(stage.name(), stageCount.getOrDefault(stage, 0L)));</span>
+        }
+
+<span class="nc" id="L132">        return List.of(new ChartSeries(&quot;Oportunidades por Estágio&quot;, data));</span>
+    }
+
+    private List&lt;ChartSeries&gt; getTasksByStatus(List&lt;Task&gt; tasks) {
+<span class="nc" id="L136">        Map&lt;TaskStatus, Long&gt; statusCount = tasks.stream()</span>
+<span class="nc" id="L137">                .collect(Collectors.groupingBy(Task::getStatus, Collectors.counting()));</span>
+
+<span class="nc" id="L139">        List&lt;ChartDataPoint&gt; data = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for (TaskStatus status : TaskStatus.values()) {</span>
+<span class="nc" id="L141">            data.add(new ChartDataPoint(status.name(), statusCount.getOrDefault(status, 0L)));</span>
+        }
+
+<span class="nc" id="L144">        return List.of(new ChartSeries(&quot;Tarefas por Status&quot;, data));</span>
+    }
+
+    private List&lt;ChartSeries&gt; getMonthlyRevenue(List&lt;Opportunity&gt; opportunities) {
+<span class="nc" id="L148">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;MMM/yyyy&quot;);</span>
+
+<span class="nc" id="L150">        Map&lt;String, BigDecimal&gt; monthlyRevenue = opportunities.stream()</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                .filter(o -&gt; o.getStage() == OpportunityStage.CLOSED)</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                .filter(o -&gt; o.getActualCloseDate() != null)</span>
+<span class="nc" id="L153">                .collect(Collectors.groupingBy(</span>
+<span class="nc" id="L154">                        o -&gt; o.getActualCloseDate().format(formatter),</span>
+<span class="nc" id="L155">                        Collectors.reducing(BigDecimal.ZERO, Opportunity::getValue, BigDecimal::add)</span>
+                ));
+
+<span class="nc" id="L158">        List&lt;ChartDataPoint&gt; data = monthlyRevenue.entrySet().stream()</span>
+<span class="nc" id="L159">                .map(entry -&gt; new ChartDataPoint(entry.getKey(), entry.getValue()))</span>
+<span class="nc" id="L160">                .toList();</span>
+
+<span class="nc" id="L162">        return List.of(new ChartSeries(&quot;Receita Mensal&quot;, data));</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BenchmarkConfigurationValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.config</a> &gt; <span class="el_source">BenchmarkConfigurationValidator.java</span></div><h1>BenchmarkConfigurationValidator.java</h1><pre class="source lang-java linenums">package com.flowcrm.config;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+
+@Configuration
+@Profile(&quot;benchmark&quot;)
+<span class="nc" id="L11">public class BenchmarkConfigurationValidator {</span>
+    @Bean
+    static BeanFactoryPostProcessor benchmarkDatabaseGuard(Environment environment) {
+<span class="nc" id="L14">        return beans -&gt; {</span>
+<span class="nc" id="L15">            String url = environment.getRequiredProperty(&quot;spring.datasource.url&quot;);</span>
+<span class="nc bnc" id="L16" title="All 2 branches missed.">            if (!url.matches(&quot;jdbc:postgresql://(?:localhost|127\\.0\\.0\\.1|postgres)(?::\\d+)?/\\w+_benchmark&quot;)) {</span>
+<span class="nc" id="L17">                throw new IllegalStateException(&quot;Benchmark requires a local disposable database ending in _benchmark&quot;);</span>
+            }
+<span class="nc" id="L19">        };</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

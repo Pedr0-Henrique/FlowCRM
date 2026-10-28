@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.auth</a> &gt; <span class="el_source">AuthController.java</span></div><h1>AuthController.java</h1><pre class="source lang-java linenums">package com.flowcrm.auth;
+
+import com.flowcrm.auth.dto.*;
+import com.flowcrm.shared.security.UserPrincipal;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(&quot;/api/v1/auth&quot;)
+@Tag(name = &quot;Auth&quot;, description = &quot;Cadastro, login, refresh e sessão&quot;)
+public class AuthController {
+
+    private final AuthService authService;
+
+<span class="nc" id="L19">    public AuthController(AuthService authService) {</span>
+<span class="nc" id="L20">        this.authService = authService;</span>
+<span class="nc" id="L21">    }</span>
+
+    @PostMapping(&quot;/register&quot;)
+    @io.swagger.v3.oas.annotations.security.SecurityRequirements
+    @Operation(summary = &quot;Cadastrar usuário e empresa&quot;)
+    public ResponseEntity&lt;AuthResponse&gt; register(@Valid @RequestBody RegisterRequest request) {
+<span class="nc" id="L27">        AuthResponse response = authService.register(request);</span>
+<span class="nc" id="L28">        return ResponseEntity.ok(response);</span>
+    }
+
+    @PostMapping(&quot;/login&quot;)
+    @io.swagger.v3.oas.annotations.security.SecurityRequirements
+    @Operation(summary = &quot;Autenticar e emitir tokens&quot;)
+    public ResponseEntity&lt;AuthResponse&gt; login(@Valid @RequestBody LoginRequest request) {
+<span class="nc" id="L35">        AuthResponse response = authService.login(request);</span>
+<span class="nc" id="L36">        return ResponseEntity.ok(response);</span>
+    }
+
+    @PostMapping(&quot;/refresh&quot;)
+    @io.swagger.v3.oas.annotations.security.SecurityRequirements
+    @Operation(summary = &quot;Renovar access token&quot;)
+    public ResponseEntity&lt;AuthResponse&gt; refresh(@Valid @RequestBody RefreshRequest request) {
+<span class="nc" id="L43">        AuthResponse response = authService.refresh(request);</span>
+<span class="nc" id="L44">        return ResponseEntity.ok(response);</span>
+    }
+
+    @PostMapping(&quot;/logout&quot;)
+    @Operation(summary = &quot;Revogar todos os tokens do usuário autenticado&quot;)
+    public ResponseEntity&lt;Void&gt; logout(@AuthenticationPrincipal UserPrincipal principal) {
+<span class="nc" id="L50">        authService.logout(principal.getUserId());</span>
+<span class="nc" id="L51">        return ResponseEntity.noContent().build();</span>
+    }
+
+    @GetMapping(&quot;/me&quot;)
+    @Operation(summary = &quot;Usuário autenticado&quot;)
+    public ResponseEntity&lt;UserResponse&gt; getMe(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="nc" id="L57">        UserResponse response = authService.getMe(userPrincipal.getUserId(), userPrincipal.getCompanyId());</span>
+<span class="nc" id="L58">        return ResponseEntity.ok(response);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActivityService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.activity</a> &gt; <span class="el_source">ActivityService.java</span></div><h1>ActivityService.java</h1><pre class="source lang-java linenums">package com.flowcrm.activity;
+
+import com.flowcrm.activity.dto.ActivityRequest;
+import com.flowcrm.activity.dto.ActivityResponse;
+import com.flowcrm.client.ClientRepository;
+import com.flowcrm.company.CompanyRepository;
+import com.flowcrm.lead.LeadRepository;
+import com.flowcrm.shared.exception.ResourceNotFoundException;
+import com.flowcrm.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class ActivityService {
+
+    private final ActivityRepository activityRepository;
+    private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
+    private final LeadRepository leadRepository;
+
+    @Transactional(readOnly = true)
+    public Page&lt;ActivityResponse&gt; findAll(UUID companyId, Pageable pageable) {
+<span class="fc" id="L31">        return activityRepository.findByCompanyId(companyId, pageable).map(this::toResponse);</span>
+    }
+
+    @Transactional
+    public ActivityResponse create(UUID companyId, UUID userId, ActivityRequest request) {
+<span class="fc" id="L36">        var company = companyRepository.findById(companyId)</span>
+<span class="pc" id="L37">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Empresa não encontrada&quot;));</span>
+<span class="fc" id="L38">        var user = userRepository.findByIdAndCompanyId(userId, companyId)</span>
+<span class="pc" id="L39">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Usuário não encontrado&quot;));</span>
+<span class="fc" id="L40">        var activity = new Activity(</span>
+                company,
+                user,
+<span class="fc" id="L43">                request.title(),</span>
+<span class="fc" id="L44">                request.type(),</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">                request.occurredAt() == null ? Instant.now() : request.occurredAt()</span>
+        );
+<span class="fc" id="L47">        activity.setDescription(request.description());</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (request.clientId() != null) {</span>
+<span class="nc" id="L49">            activity.setClient(clientRepository.findByIdAndCompanyId(request.clientId(), companyId)</span>
+<span class="nc" id="L50">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Cliente não encontrado&quot;)));</span>
+        }
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (request.leadId() != null) {</span>
+<span class="nc" id="L53">            activity.setLead(leadRepository.findByIdAndCompanyId(request.leadId(), companyId)</span>
+<span class="nc" id="L54">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Lead não encontrado&quot;)));</span>
+        }
+<span class="fc" id="L56">        return toResponse(activityRepository.save(activity));</span>
+    }
+
+    @Transactional
+    public void delete(UUID id, UUID companyId) {
+<span class="fc" id="L61">        Activity activity = activityRepository.findById(id)</span>
+<span class="fc" id="L62">                .filter(item -&gt; item.getCompany().getId().equals(companyId))</span>
+<span class="fc" id="L63">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Atividade não encontrada&quot;));</span>
+<span class="fc" id="L64">        activityRepository.delete(activity);</span>
+<span class="fc" id="L65">    }</span>
+
+    private ActivityResponse toResponse(Activity activity) {
+<span class="fc" id="L68">        return new ActivityResponse(</span>
+<span class="fc" id="L69">                activity.getId(),</span>
+<span class="fc" id="L70">                activity.getTitle(),</span>
+<span class="fc" id="L71">                activity.getDescription(),</span>
+<span class="fc" id="L72">                activity.getType(),</span>
+<span class="fc" id="L73">                activity.getOccurredAt(),</span>
+<span class="fc" id="L74">                activity.getUser().getId(),</span>
+<span class="fc" id="L75">                activity.getUser().getName(),</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                activity.getClient() == null ? null : activity.getClient().getId(),</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                activity.getClient() == null ? null : activity.getClient().getName(),</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">                activity.getLead() == null ? null : activity.getLead().getId(),</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">                activity.getLead() == null ? null : activity.getLead().getName()</span>
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

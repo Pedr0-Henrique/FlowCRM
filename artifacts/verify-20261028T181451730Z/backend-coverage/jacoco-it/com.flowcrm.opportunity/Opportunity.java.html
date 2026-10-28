@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Opportunity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.opportunity</a> &gt; <span class="el_source">Opportunity.java</span></div><h1>Opportunity.java</h1><pre class="source lang-java linenums">package com.flowcrm.opportunity;
+
+import com.flowcrm.client.Client;
+import com.flowcrm.company.Company;
+import com.flowcrm.lead.Lead;
+import com.flowcrm.user.User;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.UUID;
+
+@Entity
+@Table(name = &quot;opportunities&quot;)
+public class Opportunity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;company_id&quot;, nullable = false)
+    private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;client_id&quot;)
+    private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;lead_id&quot;)
+    private Lead lead;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;assigned_to_id&quot;)
+    private User assignedTo;
+
+    @Column(nullable = false, length = 200)
+    private String title;
+
+    @Column(columnDefinition = &quot;TEXT&quot;)
+    private String description;
+
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal value;
+
+<span class="fc" id="L49">    @Enumerated(EnumType.STRING)</span>
+    @Column(nullable = false, length = 32)
+    private OpportunityStage stage = OpportunityStage.NEW;
+
+<span class="fc" id="L53">    @Column(nullable = false)</span>
+<span class="fc" id="L54">    private Integer probability = 10;</span>
+
+    @Column(name = &quot;expected_close_date&quot;)
+    private LocalDate expectedCloseDate;
+
+    @Column(name = &quot;actual_close_date&quot;)
+    private LocalDate actualCloseDate;
+
+    @Column(columnDefinition = &quot;TEXT&quot;)
+    private String notes;
+
+    @Column(name = &quot;created_at&quot;, nullable = false, updatable = false)
+    @CreationTimestamp
+    private Instant createdAt;
+
+    @Column(name = &quot;updated_at&quot;, nullable = false)
+    @UpdateTimestamp
+    private Instant updatedAt;
+
+<span class="fc" id="L73">    public Opportunity() {</span>
+<span class="fc" id="L74">    }</span>
+
+<span class="fc" id="L76">    public Opportunity(Company company, String title, BigDecimal value) {</span>
+<span class="fc" id="L77">        this.company = company;</span>
+<span class="fc" id="L78">        this.title = title;</span>
+<span class="fc" id="L79">        this.value = value;</span>
+<span class="fc" id="L80">    }</span>
+
+    public UUID getId() {
+<span class="fc" id="L83">        return id;</span>
+    }
+
+    public void setId(UUID id) {
+<span class="nc" id="L87">        this.id = id;</span>
+<span class="nc" id="L88">    }</span>
+
+    public Company getCompany() {
+<span class="fc" id="L91">        return company;</span>
+    }
+
+    public void setCompany(Company company) {
+<span class="nc" id="L95">        this.company = company;</span>
+<span class="nc" id="L96">    }</span>
+
+    public Client getClient() {
+<span class="fc" id="L99">        return client;</span>
+    }
+
+    public void setClient(Client client) {
+<span class="fc" id="L103">        this.client = client;</span>
+<span class="fc" id="L104">    }</span>
+
+    public Lead getLead() {
+<span class="fc" id="L107">        return lead;</span>
+    }
+
+    public void setLead(Lead lead) {
+<span class="fc" id="L111">        this.lead = lead;</span>
+<span class="fc" id="L112">    }</span>
+
+    public User getAssignedTo() {
+<span class="fc" id="L115">        return assignedTo;</span>
+    }
+
+    public void setAssignedTo(User assignedTo) {
+<span class="fc" id="L119">        this.assignedTo = assignedTo;</span>
+<span class="fc" id="L120">    }</span>
+
+    public String getTitle() {
+<span class="fc" id="L123">        return title;</span>
+    }
+
+    public void setTitle(String title) {
+<span class="fc" id="L127">        this.title = title;</span>
+<span class="fc" id="L128">    }</span>
+
+    public String getDescription() {
+<span class="fc" id="L131">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="fc" id="L135">        this.description = description;</span>
+<span class="fc" id="L136">    }</span>
+
+    public BigDecimal getValue() {
+<span class="fc" id="L139">        return value;</span>
+    }
+
+    public void setValue(BigDecimal value) {
+<span class="nc" id="L143">        this.value = value;</span>
+<span class="nc" id="L144">    }</span>
+
+    public OpportunityStage getStage() {
+<span class="fc" id="L147">        return stage;</span>
+    }
+
+    public void setStage(OpportunityStage stage) {
+<span class="fc" id="L151">        this.stage = stage;</span>
+<span class="fc" id="L152">    }</span>
+
+    public Integer getProbability() {
+<span class="fc" id="L155">        return probability;</span>
+    }
+
+    public void setProbability(Integer probability) {
+<span class="fc" id="L159">        this.probability = probability;</span>
+<span class="fc" id="L160">    }</span>
+
+    public LocalDate getExpectedCloseDate() {
+<span class="fc" id="L163">        return expectedCloseDate;</span>
+    }
+
+    public void setExpectedCloseDate(LocalDate expectedCloseDate) {
+<span class="fc" id="L167">        this.expectedCloseDate = expectedCloseDate;</span>
+<span class="fc" id="L168">    }</span>
+
+    public LocalDate getActualCloseDate() {
+<span class="fc" id="L171">        return actualCloseDate;</span>
+    }
+
+    public void setActualCloseDate(LocalDate actualCloseDate) {
+<span class="nc" id="L175">        this.actualCloseDate = actualCloseDate;</span>
+<span class="nc" id="L176">    }</span>
+
+    public String getNotes() {
+<span class="fc" id="L179">        return notes;</span>
+    }
+
+    public void setNotes(String notes) {
+<span class="fc" id="L183">        this.notes = notes;</span>
+<span class="fc" id="L184">    }</span>
+
+    public Instant getCreatedAt() {
+<span class="fc" id="L187">        return createdAt;</span>
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+<span class="nc" id="L191">        this.createdAt = createdAt;</span>
+<span class="nc" id="L192">    }</span>
+
+    public Instant getUpdatedAt() {
+<span class="fc" id="L195">        return updatedAt;</span>
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+<span class="nc" id="L199">        this.updatedAt = updatedAt;</span>
+<span class="nc" id="L200">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

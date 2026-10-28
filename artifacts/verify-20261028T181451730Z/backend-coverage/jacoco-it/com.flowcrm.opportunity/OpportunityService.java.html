@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OpportunityService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.opportunity</a> &gt; <span class="el_source">OpportunityService.java</span></div><h1>OpportunityService.java</h1><pre class="source lang-java linenums">package com.flowcrm.opportunity;
+
+import com.flowcrm.client.Client;
+import com.flowcrm.client.ClientRepository;
+import com.flowcrm.company.Company;
+import com.flowcrm.company.CompanyRepository;
+import com.flowcrm.lead.Lead;
+import com.flowcrm.lead.LeadRepository;
+import com.flowcrm.opportunity.dto.OpportunityRequest;
+import com.flowcrm.opportunity.dto.OpportunityResponse;
+import com.flowcrm.opportunity.dto.OpportunityUpdateRequest;
+import com.flowcrm.shared.exception.ResourceNotFoundException;
+import com.flowcrm.user.User;
+import com.flowcrm.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class OpportunityService {
+
+    private final OpportunityRepository opportunityRepository;
+    private final CompanyRepository companyRepository;
+    private final ClientRepository clientRepository;
+    private final LeadRepository leadRepository;
+    private final UserRepository userRepository;
+
+    @Transactional(readOnly = true)
+    public Page&lt;OpportunityResponse&gt; findAll(UUID companyId, Pageable pageable) {
+<span class="fc" id="L35">        return opportunityRepository.findByCompanyId(companyId, pageable)</span>
+<span class="fc" id="L36">                .map(this::toResponse);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public Page&lt;OpportunityResponse&gt; findByStage(UUID companyId, OpportunityStage stage, Pageable pageable) {
+<span class="nc" id="L41">        return opportunityRepository.findByCompanyIdAndStage(companyId, stage, pageable)</span>
+<span class="nc" id="L42">                .map(this::toResponse);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public Page&lt;OpportunityResponse&gt; findByClient(UUID companyId, UUID clientId, Pageable pageable) {
+<span class="nc" id="L47">        return opportunityRepository.findByCompanyIdAndClientId(companyId, clientId, pageable)</span>
+<span class="nc" id="L48">                .map(this::toResponse);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public Page&lt;OpportunityResponse&gt; findByLead(UUID companyId, UUID leadId, Pageable pageable) {
+<span class="nc" id="L53">        return opportunityRepository.findByCompanyIdAndLeadId(companyId, leadId, pageable)</span>
+<span class="nc" id="L54">                .map(this::toResponse);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public Page&lt;OpportunityResponse&gt; findByAssignedTo(UUID companyId, UUID assignedToId, Pageable pageable) {
+<span class="nc" id="L59">        return opportunityRepository.findByCompanyIdAndAssignedToId(companyId, assignedToId, pageable)</span>
+<span class="nc" id="L60">                .map(this::toResponse);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public Page&lt;OpportunityResponse&gt; search(UUID companyId, String search, Pageable pageable) {
+<span class="nc bnc" id="L65" title="All 4 branches missed.">        if (search == null || search.isBlank()) {</span>
+<span class="nc" id="L66">            return findAll(companyId, pageable);</span>
+        }
+<span class="nc" id="L68">        return opportunityRepository.searchByCompanyId(companyId, search, pageable)</span>
+<span class="nc" id="L69">                .map(this::toResponse);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public OpportunityResponse findById(UUID id, UUID companyId) {
+<span class="fc" id="L74">        Opportunity opportunity = opportunityRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="fc" id="L75">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Oportunidade não encontrada&quot;));</span>
+<span class="fc" id="L76">        return toResponse(opportunity);</span>
+    }
+
+    @Transactional
+    public OpportunityResponse create(UUID companyId, OpportunityRequest request) {
+<span class="fc" id="L81">        Company company = companyRepository.findById(companyId)</span>
+<span class="pc" id="L82">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Empresa não encontrada&quot;));</span>
+
+<span class="fc" id="L84">        Client client = null;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (request.clientId() != null) {</span>
+<span class="fc" id="L86">            client = clientRepository.findByIdAndCompanyId(request.clientId(), companyId)</span>
+<span class="pc" id="L87">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Cliente não encontrado&quot;));</span>
+        }
+
+<span class="fc" id="L90">        Lead lead = null;</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (request.leadId() != null) {</span>
+<span class="nc" id="L92">            lead = leadRepository.findByIdAndCompanyId(request.leadId(), companyId)</span>
+<span class="nc" id="L93">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Lead não encontrado&quot;));</span>
+        }
+
+<span class="fc" id="L96">        User assignedTo = null;</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (request.assignedToId() != null) {</span>
+<span class="nc" id="L98">            assignedTo = userRepository.findByIdAndCompanyId(request.assignedToId(), companyId)</span>
+<span class="nc" id="L99">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Responsável não encontrado&quot;));</span>
+        }
+
+<span class="fc" id="L102">        Opportunity opportunity = new Opportunity(company, request.title(), request.value());</span>
+<span class="fc" id="L103">        updateOpportunityFromRequest(opportunity, request);</span>
+<span class="fc" id="L104">        opportunity.setClient(client);</span>
+<span class="fc" id="L105">        opportunity.setLead(lead);</span>
+<span class="fc" id="L106">        opportunity.setAssignedTo(assignedTo);</span>
+<span class="fc" id="L107">        opportunity = opportunityRepository.save(opportunity);</span>
+<span class="fc" id="L108">        return toResponse(opportunity);</span>
+    }
+
+    @Transactional
+    public OpportunityResponse update(UUID id, UUID companyId, OpportunityUpdateRequest request) {
+<span class="fc" id="L113">        Opportunity opportunity = opportunityRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="fc" id="L114">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Oportunidade não encontrada&quot;));</span>
+
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (request.clientId() != null) {</span>
+<span class="nc" id="L117">            Client client = clientRepository.findByIdAndCompanyId(request.clientId(), companyId)</span>
+<span class="nc" id="L118">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Cliente não encontrado&quot;));</span>
+<span class="nc" id="L119">            opportunity.setClient(client);</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        } else if (request.clientId() == null) {</span>
+<span class="fc" id="L121">            opportunity.setClient(null);</span>
+        }
+
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (request.leadId() != null) {</span>
+<span class="nc" id="L125">            Lead lead = leadRepository.findByIdAndCompanyId(request.leadId(), companyId)</span>
+<span class="nc" id="L126">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Lead não encontrado&quot;));</span>
+<span class="nc" id="L127">            opportunity.setLead(lead);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        } else if (request.leadId() == null) {</span>
+<span class="fc" id="L129">            opportunity.setLead(null);</span>
+        }
+
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (request.assignedToId() != null) {</span>
+<span class="nc" id="L133">            User assignedTo = userRepository.findByIdAndCompanyId(request.assignedToId(), companyId)</span>
+<span class="nc" id="L134">                    .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Responsável não encontrado&quot;));</span>
+<span class="nc" id="L135">            opportunity.setAssignedTo(assignedTo);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        } else if (request.assignedToId() == null) {</span>
+<span class="fc" id="L137">            opportunity.setAssignedTo(null);</span>
+        }
+
+<span class="fc" id="L140">        updateOpportunityFromRequest(opportunity, request);</span>
+<span class="fc" id="L141">        opportunity = opportunityRepository.save(opportunity);</span>
+<span class="fc" id="L142">        return toResponse(opportunity);</span>
+    }
+
+    @Transactional
+    public void delete(UUID id, UUID companyId) {
+<span class="fc" id="L147">        Opportunity opportunity = opportunityRepository.findByIdAndCompanyId(id, companyId)</span>
+<span class="fc" id="L148">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Oportunidade não encontrada&quot;));</span>
+<span class="fc" id="L149">        opportunityRepository.delete(opportunity);</span>
+<span class="fc" id="L150">    }</span>
+
+    private void updateOpportunityFromRequest(Opportunity opportunity, Object request) {
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        if (request instanceof OpportunityRequest req) {</span>
+<span class="fc" id="L154">            opportunity.setDescription(req.description());</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            opportunity.setStage(req.stage() != null ? req.stage() : OpportunityStage.NEW);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            opportunity.setProbability(req.probability() != null ? req.probability() : 10);</span>
+<span class="fc" id="L157">            opportunity.setExpectedCloseDate(req.expectedCloseDate());</span>
+<span class="fc" id="L158">            opportunity.setNotes(req.notes());</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        } else if (request instanceof OpportunityUpdateRequest req) {</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">            if (req.title() != null) opportunity.setTitle(req.title());</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (req.description() != null) opportunity.setDescription(req.description());</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">            if (req.value() != null) opportunity.setValue(req.value());</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            if (req.stage() != null) opportunity.setStage(req.stage());</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">            if (req.probability() != null) opportunity.setProbability(req.probability());</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">            if (req.expectedCloseDate() != null) opportunity.setExpectedCloseDate(req.expectedCloseDate());</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if (req.actualCloseDate() != null) opportunity.setActualCloseDate(req.actualCloseDate());</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            if (req.notes() != null) opportunity.setNotes(req.notes());</span>
+        }
+<span class="fc" id="L169">    }</span>
+
+    private OpportunityResponse toResponse(Opportunity opportunity) {
+<span class="fc" id="L172">        return new OpportunityResponse(</span>
+<span class="fc" id="L173">                opportunity.getId(),</span>
+<span class="fc" id="L174">                opportunity.getTitle(),</span>
+<span class="fc" id="L175">                opportunity.getDescription(),</span>
+<span class="fc" id="L176">                opportunity.getValue(),</span>
+<span class="fc" id="L177">                opportunity.getStage(),</span>
+<span class="fc" id="L178">                opportunity.getProbability(),</span>
+<span class="fc" id="L179">                opportunity.getExpectedCloseDate(),</span>
+<span class="fc" id="L180">                opportunity.getActualCloseDate(),</span>
+<span class="fc" id="L181">                opportunity.getNotes(),</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">                opportunity.getClient() != null ? opportunity.getClient().getId() : null,</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">                opportunity.getClient() != null ? opportunity.getClient().getName() : null,</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">                opportunity.getLead() != null ? opportunity.getLead().getId() : null,</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">                opportunity.getLead() != null ? opportunity.getLead().getName() : null,</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">                opportunity.getAssignedTo() != null ? opportunity.getAssignedTo().getId() : null,</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">                opportunity.getAssignedTo() != null ? opportunity.getAssignedTo().getName() : null,</span>
+<span class="fc" id="L188">                opportunity.getCompany().getId(),</span>
+<span class="fc" id="L189">                opportunity.getCreatedAt(),</span>
+<span class="fc" id="L190">                opportunity.getUpdatedAt()</span>
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

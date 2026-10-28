@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TaskController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FlowCRM API</a> &gt; <a href="index.source.html" class="el_package">com.flowcrm.task</a> &gt; <span class="el_source">TaskController.java</span></div><h1>TaskController.java</h1><pre class="source lang-java linenums">package com.flowcrm.task;
+
+import com.flowcrm.shared.security.UserPrincipal;
+import com.flowcrm.task.dto.TaskRequest;
+import com.flowcrm.task.dto.TaskResponse;
+import com.flowcrm.task.dto.TaskUpdateRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping(&quot;/api/v1/tasks&quot;)
+@Tag(name = &quot;Tasks&quot;, description = &quot;Gerenciamento de tarefas&quot;)
+public class TaskController {
+
+    private final TaskService taskService;
+
+<span class="fc" id="L26">    public TaskController(TaskService taskService) {</span>
+<span class="fc" id="L27">        this.taskService = taskService;</span>
+<span class="fc" id="L28">    }</span>
+
+    @GetMapping
+    @Operation(summary = &quot;Listar tarefas com paginação, busca e filtros&quot;)
+    public ResponseEntity&lt;Page&lt;TaskResponse&gt;&gt; findAll(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam(defaultValue = &quot;0&quot;) int page,
+            @RequestParam(defaultValue = &quot;10&quot;) int size,
+            @RequestParam(defaultValue = &quot;title&quot;) String sortBy,
+            @RequestParam(defaultValue = &quot;asc&quot;) String sortDir,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) TaskStatus status,
+            @RequestParam(required = false) TaskPriority priority,
+            @RequestParam(required = false) UUID assignedTo,
+            @RequestParam(required = false) UUID client,
+            @RequestParam(required = false) UUID lead) {
+
+<span class="fc" id="L45">        Pageable pageable = com.flowcrm.shared.web.PageRequests.create(page, size, sortBy, sortDir, Task.class);</span>
+
+        Page&lt;TaskResponse&gt; result;
+<span class="pc bpc" id="L48" title="1 of 4 branches missed.">        if (search != null &amp;&amp; !search.isBlank()) {</span>
+<span class="fc" id="L49">            result = taskService.search(userPrincipal.getCompanyId(), search, pageable);</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        } else if (status != null) {</span>
+<span class="nc" id="L51">            result = taskService.findByStatus(userPrincipal.getCompanyId(), status, pageable);</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        } else if (priority != null) {</span>
+<span class="nc" id="L53">            result = taskService.findByPriority(userPrincipal.getCompanyId(), priority, pageable);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        } else if (assignedTo != null) {</span>
+<span class="nc" id="L55">            result = taskService.findByAssignedTo(userPrincipal.getCompanyId(), assignedTo, pageable);</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        } else if (client != null) {</span>
+<span class="nc" id="L57">            result = taskService.findByClient(userPrincipal.getCompanyId(), client, pageable);</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        } else if (lead != null) {</span>
+<span class="nc" id="L59">            result = taskService.findByLead(userPrincipal.getCompanyId(), lead, pageable);</span>
+        } else {
+<span class="fc" id="L61">            result = taskService.findAll(userPrincipal.getCompanyId(), pageable);</span>
+        }
+
+<span class="fc" id="L64">        return ResponseEntity.ok(result);</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Buscar tarefa por ID&quot;)
+    public ResponseEntity&lt;TaskResponse&gt; findById(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="fc" id="L72">        return ResponseEntity.ok(taskService.findById(id, userPrincipal.getCompanyId()));</span>
+    }
+
+    @PostMapping
+    @Operation(summary = &quot;Criar nova tarefa&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES', 'USER')&quot;)
+    public ResponseEntity&lt;TaskResponse&gt; create(
+            @Valid @RequestBody TaskRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (!canManageAllTasks(userPrincipal)</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                &amp;&amp; request.assignedToId() != null</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">                &amp;&amp; !userPrincipal.getUserId().equals(request.assignedToId())) {</span>
+<span class="fc" id="L84">            throw new org.springframework.security.access.AccessDeniedException(</span>
+                    &quot;Somente ADMIN e MANAGER podem atribuir tarefas a outros usuários&quot;
+            );
+        }
+<span class="fc" id="L88">        return ResponseEntity.ok(taskService.create(</span>
+<span class="fc" id="L89">                userPrincipal.getCompanyId(),</span>
+<span class="fc" id="L90">                userPrincipal.getUserId(),</span>
+<span class="fc" id="L91">                canManageAllTasks(userPrincipal),</span>
+                request
+        ));
+    }
+
+    @PutMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Atualizar tarefa&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES', 'USER')&quot;)
+    public ResponseEntity&lt;TaskResponse&gt; update(
+            @PathVariable UUID id,
+            @Valid @RequestBody TaskUpdateRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="fc" id="L103">        return ResponseEntity.ok(taskService.update(</span>
+                id,
+<span class="fc" id="L105">                userPrincipal.getCompanyId(),</span>
+<span class="fc" id="L106">                userPrincipal.getUserId(),</span>
+<span class="fc" id="L107">                canManageAllTasks(userPrincipal),</span>
+                request
+        ));
+    }
+
+    @PatchMapping(&quot;/{id}/complete&quot;)
+    @Operation(summary = &quot;Marcar tarefa como concluída&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER', 'SALES', 'USER')&quot;)
+    public ResponseEntity&lt;TaskResponse&gt; complete(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="fc" id="L118">        return ResponseEntity.ok(taskService.complete(</span>
+                id,
+<span class="fc" id="L120">                userPrincipal.getCompanyId(),</span>
+<span class="fc" id="L121">                userPrincipal.getUserId(),</span>
+<span class="fc" id="L122">                canManageAllTasks(userPrincipal)</span>
+        ));
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Excluir tarefa&quot;)
+    @PreAuthorize(&quot;hasAnyRole('ADMIN', 'MANAGER')&quot;)
+    public ResponseEntity&lt;Void&gt; delete(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+<span class="fc" id="L132">        taskService.delete(id, userPrincipal.getCompanyId());</span>
+<span class="fc" id="L133">        return ResponseEntity.noContent().build();</span>
+    }
+
+    private boolean canManageAllTasks(UserPrincipal userPrincipal) {
+<span class="pc bpc" id="L137" title="1 of 4 branches missed.">        return &quot;ADMIN&quot;.equals(userPrincipal.getRole()) || &quot;MANAGER&quot;.equals(userPrincipal.getRole());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
