@@ -117,6 +117,36 @@ mvn verify
 
 O workflow de CI executa lint, TypeScript, testes unitários e build do frontend; para o backend executa `mvn verify` com PostgreSQL 16. Os testes cobrem autenticação, autorização por perfil, isolamento entre empresas, rate limiting compartilhado e persistência de auditoria.
 
+**Execução aprovada no GitHub Actions:** [ci #23 — 28/10/2026](https://github.com/Pedr0-Henrique/FlowCRM/actions/runs/40749609575), concluída às **15h57 (Brasília, UTC−3)**, no commit [`280a2a4`](https://github.com/Pedr0-Henrique/FlowCRM/commit/280a2a4ec6c4f9cdfea1783f963e5910635dacc8). Os três jobs foram aprovados: **Frontend**, **Backend** e **Validate production Compose configuration**. Essa execução comprova a validação desse commit; os resultados locais abaixo foram obtidos separadamente.
+
+Workflow: [configuração do CI](.github/workflows/ci.yml) · [histórico de execuções no GitHub Actions](https://github.com/Pedr0-Henrique/FlowCRM/actions/workflows/ci.yml).
+
+### Resultados dos testes
+
+Última execução local: **28/10/2026**. Resultados confirmados pelos relatórios do Vitest e Maven Surefire:
+
+| Suíte | Executados | Aprovados | Falhas/erros | Ignorados | Taxa de aprovação |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Frontend — testes unitários | 3 | 3 | 0 | 0 | 100% |
+| Backend — testes unitários | 9 | 9 | 0 | 0 | 100% |
+| **Total desta execução** | **12** | **12** | **0** | **0** | **100%** |
+
+O frontend valida regras de tarefas. No backend, foram executadas as classes `FlowCrmApplicationTests` (1 teste), `ProductionConfigurationValidatorTest` (5 testes) e `RateLimitFilterTest` (3 testes).
+
+Para reproduzir esta seleção:
+
+```bash
+# Na pasta frontend
+npm test
+
+# Na pasta backend, com JDK 21 e Maven
+mvn "-Dtest=FlowCrmApplicationTests,ProductionConfigurationValidatorTest,RateLimitFilterTest" test
+```
+
+**Escopo:** os testes de integração `FlowCrmApiIntegrationTests` não foram executados nesta rodada; exigem PostgreSQL configurado. O total acima corresponde somente às suítes executadas, não à suíte completa do CI.
+
+**Cobertura de código:** não medida nesta execução. A taxa de aprovação de 100% indica que todos os testes executados passaram; ela não representa a porcentagem do código coberta por testes. Relatórios antigos de cobertura não foram utilizados porque incluem arquivos ausentes na versão atual.
+
 ## Funcionalidades
 
 - **Autenticação e usuários:** cadastro da empresa e primeiro usuário ADMIN, login compartilhado e gestão de usuários por ADMIN/MANAGER.
@@ -238,8 +268,8 @@ As permissões são verificadas pela API; ocultar ou exibir itens de navegação
 ✅ 7. Tarefas e atividades
 ✅ 8. Dashboard, relatórios e configurações
 ✅ 9. Segurança (rate limiting PostgreSQL, auditoria com retenção, validação de segredos, headers, CodeQL e revisão de dependências implementados; resolver advisory alto transitivo de desenvolvimento e validar controles no ambiente real pendente)
-✅ 10. Testes (cobertura de autenticação, permissões, isolamento, rate limiting, auditoria e tarefas adicionada; execução do `mvn verify`/CI após estas alterações pendente)
-✅11. DevOps (CI, Compose de produção, TLS e alertas configurados; validar build/Compose e realizar primeiro deploy no host/DNS escolhidos pendente)
+✅ 10. Testes (testes de autenticação, permissões, isolamento, rate limiting, auditoria e tarefas adicionados; frontend e `mvn verify` aprovados na [execução ci #23](https://github.com/Pedr0-Henrique/FlowCRM/actions/runs/40749609575), em 28/10/2026)
+✅11. DevOps (CI, Compose de produção, TLS e alertas configurados; builds e validação do Compose aprovados na [execução ci #23](https://github.com/Pedr0-Henrique/FlowCRM/actions/runs/40749609575); primeiro deploy no host/DNS escolhidos pendente)
 ✅ 12. Finalização (README e procedimentos de operação prontos; validar restauração de backup e checklist de release no ambiente implantado pendente)
 
 ## Definition of Done
